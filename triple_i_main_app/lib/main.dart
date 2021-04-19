@@ -12,7 +12,7 @@ import './bloc/search.dart';
 import './screens/mainScreen.dart';
 
 void main() {
-  //WidgetsFlutterBinding.ensureInitialized();
+  //WidgetsFlutterBinding.ensureInitialized();;
   //await Firebase.initializeApp();
   runApp(MyApp());
 }
