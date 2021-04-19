@@ -1,0 +1,62 @@
+{
+	"version": "2.0.0",
+	"tasks": [{
+		"type": "flutter",
+		"command": "flutter",
+		"args": [
+			"build",
+			"apk"
+		],
+		"group": "build",
+		"problemMatcher": [],
+		"label": "Android: FAT apk"
+	},{
+		"type": "flutter",
+		"command": "flutter",
+		"args": [
+			"build",
+			"apk",
+			"--target-platform",
+			"android-arm"
+		],
+		"group": "build",
+		"problemMatcher": [],
+		"label": "Android: 32 bit"
+	},{
+		"type": "flutter",
+		"command": "flutter",
+		"args": [
+			"build",
+			"apk",
+			"--target-platform",
+			"android-arm64"
+		],
+		"group": "build",
+		"problemMatcher": [],
+		"label": "Android: 64 bit"
+	},{
+		"type": "flutter",
+		"command": "flutter",
+		"args": [
+			"build",
+			"apk",
+			"--split-per-abi"
+		],
+		"group": "build",
+		"problemMatcher": [],
+		"label": "Android: 32,64,x86 bit"
+	},
+		{
+			"type": "flutter",
+			"command": "flutter",
+			"args": [
+				"build",
+				"web",
+				"--web-renderer=auto"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"label": "flutter: flutter build web"
+		}
+	]
+}
