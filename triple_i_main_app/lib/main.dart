@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:main/bloc/news/news_bloc.dart';
 import 'package:main/bloc/sectorperformance.dart';
 
 import './bloc/home.dart';
@@ -40,6 +41,9 @@ class MyApp extends StatelessWidget {
     );
     return MultiBlocProvider(
       providers: [
+        BlocProvider<NewsBloc>(
+          create: (context) => NewsBloc(),
+        ),
         BlocProvider<SearchBloc>(
           create: (context) => SearchBloc(),
         ),

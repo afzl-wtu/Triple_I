@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:main/models/news/news.dart';
+import 'package:main/models/news/single_new_model.dart';
+import 'package:main/repository/news/repository.dart';
+import 'package:main/screens/components/news_tile.dart';
+import 'package:main/widgets/backgroundGrad.dart';
+import 'package:main/widgets/loading_indicator.dart';
 
 import '../../../models/profile/profile.dart';
 import '../../../models/storage.dart';
 import './profile.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   final bool isSaved;
   final Color color;
   final ProfileModel profile;
@@ -17,12 +23,25 @@ class ProfileScreen extends StatelessWidget {
   });
 
   @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
+  @override
+  void initState() {
+    _tabController = TabController(length: 2, vsync: this);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: color,
+          backgroundColor: widget.color,
           centerTitle: true,
-          title: Text(this.profile.stockQuote.symbol),
+          title: Text(this.widget.profile.stockQuote.symbol),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.of(context).pop(),
@@ -30,23 +49,69 @@ class ProfileScreen extends StatelessWidget {
           actions: <Widget>[
             WatchlistButtonWidget(
               storageModel: StorageModel(
-                  symbol: profile.stockQuote.symbol,
-                  companyName: profile.stockQuote.name),
-              isSaved: isSaved,
+                  symbol: widget.profile.stockQuote.symbol,
+                  companyName: widget.profile.stockQuote.name),
+              isSaved: widget.isSaved,
               color: Colors.white,
             )
           ],
-        ),
-        backgroundColor: Colors.black,
-        body: SafeArea(
-          child: Profile(
-            color: color,
-            stockProfile: profile.stockProfile,
-            stockChart: profile.stockChart,
-            stockQuote: profile.stockQuote,
+          bottom: TabBar(
+            indicatorColor: Theme.of(context).scaffoldBackgroundColor,
+            controller: _tabController,
+            tabs: [
+              Tab(text: 'Chart'),
+              Tab(
+                text: 'News',
+              )
+            ],
           ),
-          // ProfileNewsScreen(news: profile.stockNews,),
+        ),
+        body: Stack(
+          children: [
+            BackgroundImage(),
+            TabBarView(controller: _tabController, children: [
+              Profile(
+                color: widget.color,
+                stockProfile: widget.profile.stockProfile,
+                stockChart: widget.profile.stockChart,
+                stockQuote: widget.profile.stockQuote,
+              ),
+              NewsListTab(widget.profile.stockQuote.symbol)
+            ])
+          ],
         ));
+  }
+}
+
+class NewsListTab extends StatelessWidget {
+  final nc = NewsRepository();
+  final String companySymbol;
+  NewsListTab(this.companySymbol);
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: nc.fetchNews(specificSymbol: companySymbol),
+      builder: (_, data) {
+        if (!(data.connectionState == ConnectionState.waiting)) {
+          final newsList = (data.data as NewsDataModel).news;
+          return ListView.builder(
+              itemCount: newsList.length,
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+              itemBuilder: (context, index) {
+                return NewsTile(
+                  imgUrl: newsList[index].urlToImage ?? "",
+                  title: newsList[index].title ?? "",
+                  desc: newsList[index].description ?? "",
+                  content: "Here is Content",
+                  posturl: newsList[index].url ?? "",
+                );
+              });
+        } else {
+          return LoadingIndicatorWidget();
+        }
+      },
+    );
   }
 }
 

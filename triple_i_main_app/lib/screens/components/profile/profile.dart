@@ -23,27 +23,41 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      physics: BouncingScrollPhysics(),
-      padding: EdgeInsets.only(left: 26, right: 26, top: 26),
-      children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(this.stockQuote.name ?? '-', style: TextStyle(fontSize: 25)),
-            _buildPrice(),
-            Container(
-                height: 250,
-                padding: EdgeInsets.only(top: 26),
-                child: SimpleTimeSeriesChart(
-                    chart: this.stockChart, color: this.color)),
-            StatisticsWidget(
-              quote: stockQuote,
-              profile: stockProfile,
-            )
-          ],
-        ),
-      ],
+    return Container(
+      child: ListView(
+        physics: BouncingScrollPhysics(),
+        padding: EdgeInsets.only(left: 26, right: 26, top: 26),
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Card(
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(this.stockQuote.name ?? '-',
+                          style: TextStyle(fontSize: 25)),
+                      _buildPrice(),
+                      Container(
+                          height: 250,
+                          padding: EdgeInsets.only(top: 26),
+                          child: SimpleTimeSeriesChart(
+                              chart: this.stockChart, color: this.color)),
+                    ],
+                  ),
+                ),
+              ),
+              StatisticsWidget(
+                quote: stockQuote,
+                profile: stockProfile,
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 

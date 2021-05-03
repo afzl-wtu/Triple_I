@@ -18,27 +18,27 @@ class StatisticsWidget extends StatelessWidget {
     return [
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('Open', style: TextStyle(color: Colors.grey)),
+          title: Text('Open', style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.open)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('Prev close', style: TextStyle(color: Colors.grey)),
+          title: Text('Prev close', style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.previousClose)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('Day High', style: TextStyle(color: Colors.grey)),
+          title: Text('Day High', style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.dayHigh)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('Day Low', style: TextStyle(color: Colors.grey)),
+          title: Text('Day Low', style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.dayLow)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('52 WK High', style: TextStyle(color: Colors.grey)),
+          title: Text('52 WK High', style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.yearHigh)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('52 WK Low', style: TextStyle(color: Colors.grey)),
+          title: Text('52 WK Low', style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.dayLow)),
     ];
   }
@@ -48,27 +48,27 @@ class StatisticsWidget extends StatelessWidget {
       ListTile(
           contentPadding: EdgeInsets.zero,
           title:
-              Text('Outstanding Shares', style: TextStyle(color: Colors.grey)),
+              Text('Outstanding Shares', style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.sharesOutstanding)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('Volume', style: TextStyle(color: Colors.grey)),
+          title: Text('Volume', style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.volume)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('Avg Vol', style: TextStyle(color: Colors.grey)),
+          title: Text('Avg Vol', style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.avgVolume)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('MKT Cap', style: TextStyle(color: Colors.grey)),
+          title: Text('MKT Cap', style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.marketCap)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('P/E Ratio', style: TextStyle(color: Colors.grey)),
+          title: Text('P/E Ratio', style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.pe)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('EPS', style: TextStyle(color: Colors.grey)),
+          title: Text('EPS', style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.eps)),
     ];
   }
@@ -95,19 +95,19 @@ class StatisticsWidget extends StatelessWidget {
         Divider(),
         ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('CEO', style: TextStyle(color: Colors.grey)),
+          title: Text('CEO', style: TextStyle(color: Colors.white)),
           trailing: Text(displayDefaultTextIfNull(profile.ceo)),
         ),
         Divider(),
         ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('Sector', style: TextStyle(color: Colors.grey)),
+          title: Text('Sector', style: TextStyle(color: Colors.white)),
           trailing: Text(displayDefaultTextIfNull(profile.sector)),
         ),
         Divider(),
         ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('Exchange', style: TextStyle(color: Colors.grey)),
+          title: Text('Exchange', style: TextStyle(color: Colors.white)),
           trailing: Text('${profile.exchange}'),
         ),
         Divider(),
@@ -116,7 +116,7 @@ class StatisticsWidget extends StatelessWidget {
         SizedBox(height: 8),
         Text(
           profile.description ?? '-',
-          style: TextStyle(fontSize: 16, color: Colors.blueGrey, height: 1.75),
+          style: TextStyle(fontSize: 16, color: Colors.white, height: 1.75),
         ),
         Divider(),
         SizedBox(height: 30),

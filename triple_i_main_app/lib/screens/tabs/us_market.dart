@@ -22,17 +22,6 @@ class USMarket extends StatelessWidget {
           shadowColor: Colors.transparent,
           backgroundColor: Colors.transparent,
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 6.0),
-          child: Row(
-            children: [
-              Text(
-                'US Markets',
-                style: TextStyle(color: Colors.white, fontSize: 40),
-              ),
-            ],
-          ),
-        ),
         Expanded(child: SingleChildScrollView(child: MarketsPerformance()))
       ],
     );
@@ -61,12 +50,11 @@ class MarketsPerformance extends StatelessWidget {
 
       if (state is SectorPerformanceLoaded) {
         return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          SectorPerformance(performanceData: state.sectorPerformance),
           Divider(height: 2),
 
           // Section title.
           Padding(
-            padding: EdgeInsets.only(top: 16, bottom: 8),
+            padding: EdgeInsets.only(top: 16, bottom: 8, left: 10),
             child: Text('Most Active', style: kSubtitleStyling),
           ),
           _buildMarketMovers(
@@ -74,16 +62,17 @@ class MarketsPerformance extends StatelessWidget {
 
           // Section title
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
+            padding: EdgeInsets.only(bottom: 8, left: 10),
             child: Text('Top Gainers', style: kSubtitleStyling),
           ),
           _buildMarketMovers(stonks: state.marketGainer, color: Colors.green),
 
           Padding(
-            padding: EdgeInsets.only(top: 8, bottom: 8),
+            padding: EdgeInsets.only(left: 10, bottom: 8),
             child: Text('Top Losers', style: kSubtitleStyling),
           ),
           _buildMarketMovers(stonks: state.marketLoser, color: Colors.red),
+          SectorPerformance(performanceData: state.sectorPerformance),
         ]);
       }
 
@@ -95,17 +84,20 @@ class MarketsPerformance extends StatelessWidget {
   }
 
   Widget _buildMarketMovers({MarketMoversModelData stonks, Color color}) {
-    return Container(
-      height: 80,
-      child: ListView.builder(
-          physics: BouncingScrollPhysics(),
-          padding: EdgeInsets.symmetric(vertical: 10),
-          scrollDirection: Axis.horizontal,
-          itemCount: stonks.marketActiveModelData.length,
-          itemBuilder: (BuildContext context, int index) => MarketMovers(
-                data: stonks.marketActiveModelData[index],
-                color: color,
-              )),
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: Container(
+        height: 80,
+        child: ListView.builder(
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(vertical: 10),
+            scrollDirection: Axis.horizontal,
+            itemCount: stonks.marketActiveModelData.length,
+            itemBuilder: (BuildContext context, int index) => MarketMovers(
+                  data: stonks.marketActiveModelData[index],
+                  color: color,
+                )),
+      ),
     );
   }
 }

@@ -15,7 +15,7 @@ class FetchClient {
   Future<Response> financialModelRequest(String endpoint) async {
     final Uri uri = Uri.https('financialmodelingprep.com', endpoint,
         {'apikey': kFinancialModelingPrepApi});
-
+    print(uri.queryParametersAll);
     return await Dio().getUri(uri);
   }
 }

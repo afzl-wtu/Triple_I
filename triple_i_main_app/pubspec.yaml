@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   bloc: ^7.0.0
+  bottom_navy_bar: ^6.0.0
   cached_network_image: ^3.0.0
   charts_flutter: ^0.10.0
   cloud_firestore: ^1.0.3
@@ -44,6 +45,8 @@ dependencies:
   sentry: ^5.0.0
   syncfusion_flutter_sliders: ^19.1.56-beta
   tuple: ^2.0.0
+  url_launcher: ^6.0.3
+  webview_flutter: ^2.0.4
 
 dev_dependencies:
   flutter_test:

@@ -18,12 +18,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Stream<HomeState> _loadContent() async* {
+    var indexes;
     try {
-      final indexes = await _repository.fetchIndexes();
+      print('In try Block of _loadContent;');
+      indexes = await _repository.fetchIndexes();
       yield HomeLoaded(indexes: indexes);
     } catch (e, stack) {
       print(
-          'In _loadContent in HomeBloc: Error value of e: $e and value of stack is: $stack');
+          'In _loadContent in HomeBloc: Error value of e: $e and value of indexes is: $indexes');
     }
   }
 }

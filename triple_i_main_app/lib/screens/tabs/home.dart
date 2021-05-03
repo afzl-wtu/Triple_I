@@ -2,8 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:main/bloc/news/news_bloc.dart';
+import 'package:main/helpers/url.dart';
+import 'package:main/models/news/single_new_model.dart';
 import 'package:main/screens/articleview.dart';
+import 'package:main/widgets/empty_screen.dart';
 
 import '../../bloc/home.dart';
 import '../../helpers/color_helper.dart';
@@ -19,37 +22,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  Future<List<Article>> articleslist() async {
-    print('Future Time: ${DateTime.now().toIso8601String()}');
-    List<Article> articles = [];
-    final _col = FirebaseFirestore.instance.collection('Articles');
-    try {
-      final _documents = await _col.get();
-      final docs = _documents.docs;
-      docs.forEach((element) {
-        articles.add(
-          Article(
-            id: element.id,
-            images: (element.get('images') as List<dynamic>)
-                .map((e) => e.toString())
-                .toList(),
-            title: element.get('title'),
-            image: element.get('imageUrl'),
-            description: element.get('description'),
-            language: element.get('language') == 'Hebrew'
-                ? Language.Hebrew
-                : Language.English,
-            time: DateTime.now(),
-          ),
-        );
-      });
-    } catch (error) {
-      print(error);
-    }
-    print(articles);
-    return articles;
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(builder: (_, state) {
@@ -64,23 +36,19 @@ class _HomeState extends State<Home> {
               backgroundColor: Colors.transparent,
               shadowColor: Colors.transparent,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: marqueeGen(state.indexes, true),
-            ),
             Expanded(
-              child: FutureBuilder(
-                  future: articleslist(),
-                  builder: (_, snap) {
-                    return snap.connectionState == ConnectionState.waiting
-                        ? LoadingIndicatorWidget()
-                        : snap.data.length == 0
-                            ? Center(
-                                child: Text('No Articles Currently'),
-                              )
-                            : _buildGrid(snap.data);
-                  }),
-            )
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Column(
+                  children: [
+                    marqueeGen(state.indexes),
+                    Expanded(
+                        child:
+                            SingleChildScrollView(child: NewsSectionWidget())),
+                  ],
+                ),
+              ),
+            ),
           ],
         );
       }
@@ -90,19 +58,19 @@ class _HomeState extends State<Home> {
     });
   }
 
-  Widget marqueeGen(List<MarketIndexModel> indexes, bool play) {
-    return play
-        ? Marquee(
-            backwardAnimation: Curves.linear,
-            forwardAnimation: Curves.linear,
-            // directionMarguee: DirectionMarguee.oneDirection,
-            child: Row(
-              children: indexes
-                  .map((indexData) => _buildIndexTile(indexData))
-                  .toList(),
-            ),
-          )
-        : Container(height: 30, width: 40, color: Colors.white);
+  Widget marqueeGen(List<MarketIndexModel> indexes) {
+    return //Todo: Duration Change before production
+
+        Marquee(
+      pauseDuration: Duration(hours: 1),
+      backwardAnimation: Curves.linear,
+      forwardAnimation: Curves.linear,
+      // directionMarguee: DirectionMarguee.oneDirection,
+      child: Row(
+        children:
+            indexes.map((indexData) => _buildIndexTile(indexData)).toList(),
+      ),
+    );
   }
 
   Widget _buildIndexTile(MarketIndexModel index) {
@@ -112,31 +80,156 @@ class _HomeState extends State<Home> {
     if (index.name == 'CBOE Volatility Index') name = 'CBOE';
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 0),
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Column(
-              //mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  '${name ?? index.name}',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  '${index.price}',
-                  style: TextStyle(fontSize: 16),
-                ),
-                Card(
-                  color: determineColorBasedOnChange(index.change),
-                  child: Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Text(
-                      '${determineTextBasedOnChange(index.change / index.price * 100)}%',
-                    ),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: Column(
+            //mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '${name ?? index.name}',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(
+                '${index.price}',
+                style: TextStyle(fontSize: 16),
+              ),
+              Card(
+                color: determineColorBasedOnChange(index.change),
+                child: Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Text(
+                    '${determineTextBasedOnChange(index.change / index.price * 100)}%',
                   ),
-                )
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class NewsSectionWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<NewsBloc, NewsState>(
+        builder: (BuildContext context, NewsState state) {
+      if (state is NewsInitial) {
+        BlocProvider.of<NewsBloc>(context).add(FetchNews());
+      }
+
+      if (state is NewsError) {
+        return Padding(
+          padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 3),
+          child: EmptyScreen(message: state.message),
+        );
+      }
+
+      if (state is NewsLoaded) {
+        return ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: state.news.length,
+          itemBuilder: (BuildContext context, int index) {
+            // Ensure that we don't have empty headlines.
+            if (state.news[index].news.isEmpty) {
+              return EmptyScreen(
+                  message:
+                      'There are no news related to ${state.news[index].keyWord}.');
+            }
+
+            return NewsCardWidget(
+              title: state.news[index].keyWord,
+              news: state.news[index].news,
+            );
+          },
+        );
+      }
+
+      return Padding(
+        padding: EdgeInsets.only(
+            top: MediaQuery.of(context).size.height / 3, left: 4, right: 4),
+        child: LoadingIndicatorWidget(),
+      );
+    });
+  }
+}
+
+class NewsCardWidget extends StatelessWidget {
+  final String title;
+  final List<SingleNewModel> news;
+
+  NewsCardWidget({@required this.title, @required this.news})
+      : assert(news != null);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Text(this.title,
+              style: TextStyle(fontSize: 36, color: Colors.white)),
+        ),
+        Container(
+          height: 225,
+          child: ListView.builder(
+              shrinkWrap: true,
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              itemCount: news.length,
+              itemBuilder: (BuildContext context, int i) => Padding(
+                  padding: EdgeInsets.only(top: 8, right: 24),
+                  child: _renderNewsArticle(news[i]))),
+        )
+      ],
+    );
+  }
+
+  Widget _renderNewsArticle(SingleNewModel singleNew) {
+    print(singleNew.urlToImage);
+    return InkWell(
+      onTap: () {
+        print('PP in Inkwell');
+        launchUrl(singleNew.url);
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+        child: Container(
+          color: Colors.white54,
+          child: Container(
+            width: 200,
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(bottom: 8, left: 3, right: 2),
+                  child: Text(
+                    singleNew.title,
+                    style: TextStyle(
+                        height: 1.6,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Expanded(
+                  child: singleNew.urlToImage == null
+                      ? Icon(
+                          Icons.photo_size_select_actual_rounded,
+                          size: 120,
+                          color: Color.fromRGBO(65, 190, 186, 1),
+                        )
+                      : CachedNetworkImage(
+                          imageUrl: singleNew.urlToImage,
+                          fit: BoxFit.cover,
+                        ),
+                ),
               ],
             ),
           ),
@@ -145,58 +238,9 @@ class _HomeState extends State<Home> {
     );
   }
 
-  _buildGrid(List<Article> data) {
-    return Card(
-        shadowColor: Colors.transparent,
-        color: Colors.transparent,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 8.0,
-          ),
-          child: GridView.builder(
-            shrinkWrap: true,
-            itemCount: data.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                crossAxisCount: 2,
-                childAspectRatio: 1 / 1.07),
-            itemBuilder: (_, i) => InkWell(
-              onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => ArticleView(data[i]))),
-              child: GridTile(
-                child: Column(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(8),
-                          topRight: Radius.circular(8)),
-                      child: Container(
-                        height: 140,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: CachedNetworkImageProvider(
-                                data[i].image.isNotEmpty
-                                    ? data[i].image
-                                    : data[i].images[0]),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white)),
-                      child: GridTileBar(
-                        backgroundColor: Colors.transparent,
-                        title: Text(data[i].title),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ));
+  ImageProvider _imageIsValid(String url) {
+    return url == null
+        ? AssetImage('assets/images/default.jpg')
+        : NetworkImage(url);
   }
 }
