@@ -35,9 +35,9 @@ dependencies:
   firebase_storage: ^8.0.1
   flutter_bloc: ^7.0.0
   flutter_offline: ^2.0.0
+  flutter_slider_drawer: ^2.0.0
   flutter_spinkit: ^5.0.0
   flutter_staggered_grid_view: ^0.3.4
-  foldable_sidebar: ^1.0.0
   font_awesome_flutter: ^9.0.0
   intl: ^0.17.0
   material_floating_search_bar: ^0.3.3

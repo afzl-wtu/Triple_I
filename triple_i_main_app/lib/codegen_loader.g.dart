@@ -47,7 +47,8 @@ class CodegenLoader extends AssetLoader{
   "Notification": "Notification",
   "Most Active": "Most Active",
   "Top Gainers": "Top Gainers",
-  "Top Losers": "Top Losers"
+  "Top Losers": "Top Losers",
+  "Search a Stock...": "Search a Stock..."
 };
 static const Map<String,dynamic> he = {
   "Loading": "טוען",
@@ -82,7 +83,8 @@ static const Map<String,dynamic> he = {
   "Notification": "התראות",
   "Most Active": "הכי פעילות",
   "Top Gainers": "הכי מרוויחות",
-  "Top Losers": "הכי מפסידות"
+  "Top Losers": "הכי מפסידות",
+  "Search a Stock...": "חפש מניה..."
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": en, "he": he};
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_offline/flutter_offline.dart';
+import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../../models/search.dart';
 import './search_history.dart';
@@ -10,19 +12,21 @@ import '../../widgets/loading_indicator.dart';
 import '../../widgets//message.dart';
 import '../../bloc/search.dart';
 
-Widget buildFloatingSearchBar(context, Function drawerToogle) {
+Widget buildFloatingSearchBar(
+    context, GlobalKey<SliderMenuContainerState> key) {
   final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
   return BlocBuilder<SearchBloc, SearchState>(
     builder: (_, state) => FloatingSearchBar(
       leadingActions: [
-        FloatingSearchBarAction.icon(
-          icon: Icons.menu,
-          onTap: drawerToogle,
-          showIfOpened: true,
+        IconButton(
+          icon: AnimatedIcon(
+              icon: AnimatedIcons.menu_close,
+              progress: key.currentState.animation),
+          onPressed: key.currentState.toggle,
         )
       ],
-      hint: 'Search a Stock...',
+      hint: 'Search a Stock...'.tr(),
       scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
       transitionDuration: const Duration(milliseconds: 800),
       transitionCurve: Curves.easeInOut,

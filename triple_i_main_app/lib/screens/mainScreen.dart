@@ -1,7 +1,7 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:foldable_sidebar/foldable_sidebar.dart';
+import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 import 'package:main/widgets/backgroundGrad.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -20,7 +20,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final pageController = PageController();
-  var drawerStatus = FSBStatus.FSB_CLOSE;
+  final GlobalKey<SliderMenuContainerState> _drawerKey =
+      GlobalKey<SliderMenuContainerState>();
 
   int pageIndex = 0;
 
@@ -41,61 +42,54 @@ class _MainScreenState extends State<MainScreen> {
     pageController.jumpToPage(selectedTab);
   }
 
-  void drawerToogle() {
-    setState(() {
-      drawerStatus = drawerStatus == FSBStatus.FSB_OPEN
-          ? FSBStatus.FSB_CLOSE
-          : FSBStatus.FSB_OPEN;
-    });
-  }
-
+  void _toogleDrawer() {}
   @override
   Widget build(BuildContext context) {
-    context.setLocale(Locale('he'));
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: FoldableSidebarBuilder(
-        drawerBackgroundColor: Color.fromRGBO(65, 190, 186, 1),
-        status: drawerStatus,
-        drawer: CustomDrawer(
-          closeDrawer: drawerToogle,
+    // context.setLocale(Locale('he'));
+    return Material(
+      child: SliderMenuContainer(
+        key: _drawerKey,
+        hasAppBar: false,
+        sliderMenu: CustomDrawer(),
+        sliderMain: Scaffold(
+          backgroundColor: Colors.black,
+          body: buildStack(context),
+          bottomNavigationBar: BottomNavyBar(
+            selectedIndex: pageIndex,
+            onItemSelected: onTapBottomBar,
+            //color: Color.fromRGBO(65, 190, 186, 1),
+            backgroundColor: Colors.white,
+            items: [
+              BottomNavyBarItem(
+                  inactiveColor: Colors.black54,
+                  icon: Icon(Icons.domain),
+                  title: Text('Home'.tr()),
+                  activeColor: Color.fromRGBO(65, 190, 186, 1)),
+              BottomNavyBarItem(
+                  inactiveColor: Colors.black54,
+                  icon: Icon(Icons.insert_chart),
+                  title: Text('US Markets').tr(),
+                  activeColor: Color.fromRGBO(65, 190, 186, 1)),
+              BottomNavyBarItem(
+                  inactiveColor: Colors.black54,
+                  icon: Icon(Icons.backup_table),
+                  title: Text('Watchlist'.tr()),
+                  activeColor: Color.fromRGBO(65, 190, 186, 1)),
+              BottomNavyBarItem(
+                  inactiveColor: Colors.black54,
+                  icon: Icon(
+                    Icons.dashboard,
+                  ),
+                  title: Text('Articles'.tr()),
+                  activeColor: Color.fromRGBO(65, 190, 186, 1)),
+            ],
+          ),
         ),
-        screenContents: buildStack(context, drawerToogle),
-      ), //,
-      bottomNavigationBar: BottomNavyBar(
-        selectedIndex: pageIndex,
-        onItemSelected: onTapBottomBar,
-        //color: Color.fromRGBO(65, 190, 186, 1),
-        backgroundColor: Colors.white,
-        items: [
-          BottomNavyBarItem(
-              inactiveColor: Colors.black54,
-              icon: Icon(Icons.domain),
-              title: Text('Home'.tr()),
-              activeColor: Color.fromRGBO(65, 190, 186, 1)),
-          BottomNavyBarItem(
-              inactiveColor: Colors.black54,
-              icon: Icon(Icons.insert_chart),
-              title: Text('US Markets').tr(),
-              activeColor: Color.fromRGBO(65, 190, 186, 1)),
-          BottomNavyBarItem(
-              inactiveColor: Colors.black54,
-              icon: Icon(Icons.backup_table),
-              title: Text('Watchlist'.tr()),
-              activeColor: Color.fromRGBO(65, 190, 186, 1)),
-          BottomNavyBarItem(
-              inactiveColor: Colors.black54,
-              icon: Icon(
-                Icons.dashboard,
-              ),
-              title: Text('Articles'.tr()),
-              activeColor: Color.fromRGBO(65, 190, 186, 1)),
-        ],
       ),
     );
   }
 
-  Stack buildStack(BuildContext context, Function drawerToogle) {
+  Stack buildStack(BuildContext context) {
     return Stack(children: [
       BackgroundImage(),
       PageView(
@@ -110,7 +104,7 @@ class _MainScreenState extends State<MainScreen> {
         onPageChanged: onPageChanged,
         physics: NeverScrollableScrollPhysics(),
       ),
-      buildFloatingSearchBar(context, drawerToogle),
+      buildFloatingSearchBar(context, _drawerKey),
     ]);
   }
 }
