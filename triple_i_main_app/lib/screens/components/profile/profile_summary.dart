@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../../../helpers/text_helper.dart';
 import '../../../models/profile/stock_profile.dart';
@@ -18,27 +19,27 @@ class StatisticsWidget extends StatelessWidget {
     return [
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('Open', style: TextStyle(color: Colors.white)),
+          title: Text('Open'.tr(), style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.open)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('Prev close', style: TextStyle(color: Colors.white)),
+          title: Text('Prev close'.tr(), style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.previousClose)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('Day High', style: TextStyle(color: Colors.white)),
+          title: Text('Day High'.tr(), style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.dayHigh)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('Day Low', style: TextStyle(color: Colors.white)),
+          title: Text('Day Low'.tr(), style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.dayLow)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('52 WK High', style: TextStyle(color: Colors.white)),
+          title: Text('52 WK High'.tr(), style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.yearHigh)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('52 WK Low', style: TextStyle(color: Colors.white)),
+          title: Text('52 WK Low'.tr(), style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.dayLow)),
     ];
   }
@@ -47,28 +48,28 @@ class StatisticsWidget extends StatelessWidget {
     return [
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title:
-              Text('Outstanding Shares', style: TextStyle(color: Colors.white)),
+          title: Text('Outstanding Shares'.tr(),
+              style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.sharesOutstanding)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('Volume', style: TextStyle(color: Colors.white)),
+          title: Text('Volume'.tr(), style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.volume)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('Avg Vol', style: TextStyle(color: Colors.white)),
+          title: Text('Avg Vol'.tr(), style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.avgVolume)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('MKT Cap', style: TextStyle(color: Colors.white)),
+          title: Text('MKT Cap'.tr(), style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.marketCap)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('P/E Ratio', style: TextStyle(color: Colors.white)),
+          title: Text('P/E Ratio'.tr(), style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.pe)),
       ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('EPS', style: TextStyle(color: Colors.white)),
+          title: Text('EPS'.tr(), style: TextStyle(color: Colors.white)),
           trailing: _renderText(quote.eps)),
     ];
   }
@@ -79,7 +80,7 @@ class StatisticsWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(height: 16),
-        Text('Summary', style: TextStyle(fontSize: 25)),
+        Text('Summary'.tr(), style: TextStyle(fontSize: 25)),
         SizedBox(height: 8),
         Row(
           children: <Widget>[
@@ -95,23 +96,23 @@ class StatisticsWidget extends StatelessWidget {
         Divider(),
         ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('CEO', style: TextStyle(color: Colors.white)),
+          title: Text('CEO'.tr(), style: TextStyle(color: Colors.white)),
           trailing: Text(displayDefaultTextIfNull(profile.ceo)),
         ),
         Divider(),
         ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('Sector', style: TextStyle(color: Colors.white)),
+          title: Text('Sector'.tr(), style: TextStyle(color: Colors.white)),
           trailing: Text(displayDefaultTextIfNull(profile.sector)),
         ),
         Divider(),
         ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text('Exchange', style: TextStyle(color: Colors.white)),
+          title: Text('Exchange'.tr(), style: TextStyle(color: Colors.white)),
           trailing: Text('${profile.exchange}'),
         ),
         Divider(),
-        Text('About ${profile.companyName ?? '-'} ',
+        Text('${'About'.tr()} ${profile.companyName ?? '-'} ',
             style: TextStyle(fontSize: 25)),
         SizedBox(height: 8),
         Text(

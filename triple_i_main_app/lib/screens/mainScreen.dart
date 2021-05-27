@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:foldable_sidebar/foldable_sidebar.dart';
 import 'package:main/widgets/backgroundGrad.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import './components/search.dart';
 import './components/drawer.dart';
@@ -50,6 +51,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    context.setLocale(Locale('he'));
     return Scaffold(
       backgroundColor: Colors.black,
       body: FoldableSidebarBuilder(
@@ -69,24 +71,24 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavyBarItem(
               inactiveColor: Colors.black54,
               icon: Icon(Icons.domain),
-              title: Text('Home'),
+              title: Text('Home'.tr()),
               activeColor: Color.fromRGBO(65, 190, 186, 1)),
           BottomNavyBarItem(
               inactiveColor: Colors.black54,
               icon: Icon(Icons.insert_chart),
-              title: Text('US Markets'),
+              title: Text('US Markets').tr(),
               activeColor: Color.fromRGBO(65, 190, 186, 1)),
           BottomNavyBarItem(
               inactiveColor: Colors.black54,
               icon: Icon(Icons.backup_table),
-              title: Text('Watchlist'),
+              title: Text('Watchlist'.tr()),
               activeColor: Color.fromRGBO(65, 190, 186, 1)),
           BottomNavyBarItem(
               inactiveColor: Colors.black54,
               icon: Icon(
                 Icons.dashboard,
               ),
-              title: Text('Articles'),
+              title: Text('Articles'.tr()),
               activeColor: Color.fromRGBO(65, 190, 186, 1)),
         ],
       ),

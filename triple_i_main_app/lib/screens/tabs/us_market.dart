@@ -1,7 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:main/bloc/profile.dart';
 import 'package:main/bloc/sectorperformance.dart';
 import 'package:main/helpers/color_helper.dart';
@@ -55,7 +54,7 @@ class MarketsPerformance extends StatelessWidget {
           // Section title.
           Padding(
             padding: EdgeInsets.only(top: 16, bottom: 8, left: 10),
-            child: Text('Most Active', style: kSubtitleStyling),
+            child: Text('Most Active'.tr(), style: kSubtitleStyling),
           ),
           _buildMarketMovers(
               stonks: state.marketActive, color: Color(0xFF263497)),
@@ -63,13 +62,13 @@ class MarketsPerformance extends StatelessWidget {
           // Section title
           Padding(
             padding: EdgeInsets.only(bottom: 8, left: 10),
-            child: Text('Top Gainers', style: kSubtitleStyling),
+            child: Text('Top Gainers'.tr(), style: kSubtitleStyling),
           ),
           _buildMarketMovers(stonks: state.marketGainer, color: Colors.green),
 
           Padding(
             padding: EdgeInsets.only(left: 10, bottom: 8),
-            child: Text('Top Losers', style: kSubtitleStyling),
+            child: Text('Top Losers'.tr(), style: kSubtitleStyling),
           ),
           _buildMarketMovers(stonks: state.marketLoser, color: Colors.red),
           SectorPerformance(performanceData: state.sectorPerformance),

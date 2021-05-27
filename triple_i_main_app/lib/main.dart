@@ -1,10 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:main/bloc/news/news_bloc.dart';
+
 import 'package:main/bloc/sectorperformance.dart';
+import 'package:main/codegen_loader.g.dart';
 
 import './bloc/home.dart';
 import './bloc/profile.dart';
@@ -12,10 +15,18 @@ import './bloc/search.dart';
 
 import './screens/mainScreen.dart';
 
-void main() {
-  //WidgetsFlutterBinding.ensureInitialized();;
-  //await Firebase.initializeApp();
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+  runApp(
+    EasyLocalization(
+      child: MyApp(),
+      supportedLocales: [Locale('en'), Locale('he')],
+      path: 'assets/translations',
+      fallbackLocale: Locale('en'),
+      assetLoader: CodegenLoader(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -57,6 +68,9 @@ class MyApp extends StatelessWidget {
             create: (_) => SectorPerformanceBloc())
       ],
       child: MaterialApp(
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
         home: MainScreen(),
         debugShowCheckedModeBanner: false,
       ),

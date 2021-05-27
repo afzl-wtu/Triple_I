@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CustomDrawer extends StatelessWidget {
   final Function closeDrawer;
@@ -41,7 +42,7 @@ class CustomDrawer extends StatelessWidget {
             },
             leading: Icon(Icons.person),
             title: Text(
-              "Your Profile",
+              "Your Profile".tr(),
             ),
           ),
           Divider(
@@ -53,7 +54,7 @@ class CustomDrawer extends StatelessWidget {
               debugPrint("Tapped settings");
             },
             leading: Icon(Icons.settings),
-            title: Text("Settings"),
+            title: Text("Settings".tr()),
           ),
           Divider(
             height: 1,
@@ -61,10 +62,10 @@ class CustomDrawer extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              debugPrint("Tapped Payments");
+              debugPrint("Tapped Payments".tr());
             },
             leading: Icon(Icons.payment),
-            title: Text("Payments"),
+            title: Text("Payments".tr()),
           ),
           Divider(
             height: 1,
@@ -75,7 +76,7 @@ class CustomDrawer extends StatelessWidget {
               debugPrint("Tapped Notifications");
             },
             leading: Icon(Icons.notifications),
-            title: Text("Notifications"),
+            title: Text("Notifications".tr()),
           ),
           Divider(
             height: 1,
@@ -83,10 +84,10 @@ class CustomDrawer extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              debugPrint("Tapped Log Out");
+              debugPrint("Tapped Log Out".tr());
             },
             leading: Icon(Icons.exit_to_app),
-            title: Text("Log Out"),
+            title: Text("Log Out".tr()),
           ),
         ],
       ),

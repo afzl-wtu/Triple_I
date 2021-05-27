@@ -50,10 +50,6 @@ class Profile extends StatelessWidget {
                   ),
                 ),
               ),
-              StatisticsWidget(
-                quote: stockQuote,
-                profile: stockProfile,
-              )
             ],
           ),
         ],
