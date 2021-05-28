@@ -68,6 +68,9 @@ class MyApp extends StatelessWidget {
             create: (_) => SectorPerformanceBloc())
       ],
       child: MaterialApp(
+        theme: ThemeData(
+          primaryColor: Color.fromRGBO(65, 190, 186, 1),
+        ),
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,

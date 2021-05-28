@@ -7,7 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 import './components/search.dart';
 import './components/drawer.dart';
-import './tabs/home.dart';
+import 'tabs/news_tab.dart';
 import 'tabs/us_market.dart';
 import './tabs/notification.dart';
 import './tabs/search.dart';
@@ -42,15 +42,17 @@ class _MainScreenState extends State<MainScreen> {
     pageController.jumpToPage(selectedTab);
   }
 
-  void _toogleDrawer() {}
   @override
   Widget build(BuildContext context) {
-    // context.setLocale(Locale('he'));
     return Material(
       child: SliderMenuContainer(
+        slideDirection:
+            EasyLocalization.of(context).currentLocale == Locale('he')
+                ? SlideDirection.RIGHT_TO_LEFT
+                : SlideDirection.LEFT_TO_RIGHT,
         key: _drawerKey,
         hasAppBar: false,
-        sliderMenu: CustomDrawer(),
+        sliderMenu: CustomDrawer(_drawerKey),
         sliderMain: Scaffold(
           backgroundColor: Colors.black,
           body: buildStack(context),
@@ -63,12 +65,7 @@ class _MainScreenState extends State<MainScreen> {
               BottomNavyBarItem(
                   inactiveColor: Colors.black54,
                   icon: Icon(Icons.domain),
-                  title: Text('Home'.tr()),
-                  activeColor: Color.fromRGBO(65, 190, 186, 1)),
-              BottomNavyBarItem(
-                  inactiveColor: Colors.black54,
-                  icon: Icon(Icons.insert_chart),
-                  title: Text('US Markets').tr(),
+                  title: Text('News'.tr()),
                   activeColor: Color.fromRGBO(65, 190, 186, 1)),
               BottomNavyBarItem(
                   inactiveColor: Colors.black54,
@@ -77,10 +74,22 @@ class _MainScreenState extends State<MainScreen> {
                   activeColor: Color.fromRGBO(65, 190, 186, 1)),
               BottomNavyBarItem(
                   inactiveColor: Colors.black54,
+                  icon: Icon(Icons.insert_chart),
+                  title: Text('US Markets').tr(),
+                  activeColor: Color.fromRGBO(65, 190, 186, 1)),
+              BottomNavyBarItem(
+                  inactiveColor: Colors.black54,
                   icon: Icon(
                     Icons.dashboard,
                   ),
                   title: Text('Articles'.tr()),
+                  activeColor: Color.fromRGBO(65, 190, 186, 1)),
+              BottomNavyBarItem(
+                  inactiveColor: Colors.black54,
+                  icon: Icon(
+                    Icons.dashboard,
+                  ),
+                  title: Text('Community'.tr()),
                   activeColor: Color.fromRGBO(65, 190, 186, 1)),
             ],
           ),
@@ -94,9 +103,9 @@ class _MainScreenState extends State<MainScreen> {
       BackgroundImage(),
       PageView(
         children: [
-          Home(),
-          USMarket(),
+          News(),
           SSearch(),
+          USMarket(),
           ArticlesTab(),
           NNotification(),
         ],

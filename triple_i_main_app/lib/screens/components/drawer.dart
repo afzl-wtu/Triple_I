@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
+import 'package:main/screens/drawer/settings_screen.dart';
 
 class CustomDrawer extends StatelessWidget {
-  final Function closeDrawer;
+  final GlobalKey<SliderMenuContainerState> drawerKey;
 
-  const CustomDrawer({Key key, this.closeDrawer}) : super(key: key);
+  const CustomDrawer(this.drawerKey);
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,12 @@ class CustomDrawer extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              debugPrint("Tapped settings");
+              drawerKey.currentState.closeDrawer();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => SettingsScreen(),
+                ),
+              );
             },
             leading: Icon(Icons.settings),
             title: Text("Settings".tr()),

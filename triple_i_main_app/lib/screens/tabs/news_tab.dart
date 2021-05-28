@@ -16,12 +16,12 @@ import '../../models/article.dart';
 import '../../models/profile/market_index.dart';
 import '../../widgets/loading_indicator.dart';
 
-class Home extends StatefulWidget {
+class News extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _NewsState createState() => _NewsState();
 }
 
-class _HomeState extends State<Home> {
+class _NewsState extends State<News> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(builder: (_, state) {
