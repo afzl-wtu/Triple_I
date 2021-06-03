@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:main/models/article.dart';
-import 'package:main/screens/articleview.dart';
+import 'package:main/screens/article_view_screen.dart';
 import 'package:main/widgets/loading_indicator.dart';
 
 class ArticlesTab extends StatelessWidget {

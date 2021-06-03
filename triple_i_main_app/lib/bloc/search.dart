@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:meta/meta.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../helpers/sentry_helper.dart';
 import '../models/search.dart';
@@ -49,7 +50,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     final data = await this._client.fetch();
 
     yield data.isEmpty
-        ? SearchResultsLoadingError(message: 'No recent searches')
+        ? SearchResultsLoadingError(message: 'No recent searches'.tr())
         : SearchData(data: data, listType: ListType.searchHistory);
   }
 

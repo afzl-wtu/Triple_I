@@ -1,5 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart' as el;
+
 import 'package:main/models/article.dart';
 
 class ArticleView extends StatelessWidget {
@@ -27,7 +29,7 @@ class ArticleView extends StatelessWidget {
             shrinkWrap: true,
             itemCount: data.images.length,
             itemBuilder: (_, i) => CachedNetworkImage(
-              placeholder: (_, txt) => Text('Loading'),
+              placeholder: (_, txt) => Text('Loading...'.tr()),
               fit: BoxFit.fitWidth,
               imageUrl: data.images[i],
             ),

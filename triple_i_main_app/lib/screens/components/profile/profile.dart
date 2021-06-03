@@ -6,7 +6,6 @@ import '../../../models/profile/stock_chart.dart';
 import '../../../models/profile/stock_profile.dart';
 import '../../../models/profile/stock_quote.dart';
 import './profile_graph.dart';
-import './profile_summary.dart';
 
 class Profile extends StatelessWidget {
   final Color color;

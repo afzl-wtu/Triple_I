@@ -1,17 +1,19 @@
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
+
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
-import 'package:main/widgets/backgroundGrad.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import '../widgets/backgroundGrad.dart';
 import './components/search.dart';
 import './components/drawer.dart';
-import 'tabs/news_tab.dart';
-import 'tabs/us_market.dart';
-import './tabs/notification.dart';
-import './tabs/search.dart';
-import 'tabs/articles.dart';
+import './tabs/articles_tab.dart';
+import './tabs/community_tab.dart';
+import './tabs/markets_tab.dart';
+import './tabs/news_tab.dart';
+import './tabs/watchlist_tab.dart';
+
+//flutter pub run easy_localization:generate -S "assets/translations/" -O "lib/"
 
 class MainScreen extends StatefulWidget {
   @override
@@ -19,11 +21,11 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final pageController = PageController();
+  final pageController = PageController(initialPage: 2);
   final GlobalKey<SliderMenuContainerState> _drawerKey =
       GlobalKey<SliderMenuContainerState>();
 
-  int pageIndex = 0;
+  int pageIndex = 2;
 
   @override
   void dispose() {
@@ -86,9 +88,7 @@ class _MainScreenState extends State<MainScreen> {
                   activeColor: Color.fromRGBO(65, 190, 186, 1)),
               BottomNavyBarItem(
                   inactiveColor: Colors.black54,
-                  icon: Icon(
-                    Icons.dashboard,
-                  ),
+                  icon: Icon(Icons.people),
                   title: Text('Community'.tr()),
                   activeColor: Color.fromRGBO(65, 190, 186, 1)),
             ],
@@ -103,11 +103,11 @@ class _MainScreenState extends State<MainScreen> {
       BackgroundImage(),
       PageView(
         children: [
-          News(),
-          SSearch(),
-          USMarket(),
+          NewsTab(),
+          WatchlistTab(),
+          MarketsTab(),
           ArticlesTab(),
-          NNotification(),
+          CommunityTab(),
         ],
         controller: pageController,
         onPageChanged: onPageChanged,

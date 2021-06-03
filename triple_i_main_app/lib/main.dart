@@ -13,7 +13,7 @@ import './bloc/home.dart';
 import './bloc/profile.dart';
 import './bloc/search.dart';
 
-import './screens/mainScreen.dart';
+import 'screens/main_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

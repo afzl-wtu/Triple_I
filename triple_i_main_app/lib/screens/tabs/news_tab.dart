@@ -1,27 +1,25 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:main/bloc/news/news_bloc.dart';
-import 'package:main/helpers/url.dart';
-import 'package:main/models/news/single_new_model.dart';
-import 'package:main/screens/articleview.dart';
-import 'package:main/widgets/empty_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 
+import '../../bloc/news/news_bloc.dart';
+import '../../helpers/url.dart';
+import '../../models/news/single_new_model.dart';
+import '../../widgets/empty_screen.dart';
 import '../../bloc/home.dart';
 import '../../helpers/color_helper.dart';
 import '../../helpers/marquee_helper.dart';
 import '../../helpers/text_helper.dart';
-import '../../models/article.dart';
 import '../../models/profile/market_index.dart';
 import '../../widgets/loading_indicator.dart';
 
-class News extends StatefulWidget {
+class NewsTab extends StatefulWidget {
   @override
-  _NewsState createState() => _NewsState();
+  _NewsTabState createState() => _NewsTabState();
 }
 
-class _NewsState extends State<News> {
+class _NewsTabState extends State<NewsTab> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(builder: (_, state) {
@@ -75,9 +73,9 @@ class _NewsState extends State<News> {
 
   Widget _buildIndexTile(MarketIndexModel index) {
     String name;
-    if (index.name == 'Dow Jones Industrial Average') name = 'Dow Jones';
-    if (index.name == 'NASDAQ Composite') name = 'NASDAQ';
-    if (index.name == 'CBOE Volatility Index') name = 'CBOE';
+    if (index.name == 'Dow Jones Industrial Average') name = 'Dow Jones'.tr();
+    if (index.name == 'NASDAQ Composite') name = 'NASDAQ'.tr();
+    if (index.name == 'CBOE Volatility Index') name = 'CBOE'.tr();
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
       child: Card(
@@ -171,7 +169,7 @@ class NewsCardWidget extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Text(this.title,
+          child: Text(this.title.tr(),
               style: TextStyle(fontSize: 36, color: Colors.white)),
         ),
         Container(
@@ -236,11 +234,5 @@ class NewsCardWidget extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  ImageProvider _imageIsValid(String url) {
-    return url == null
-        ? AssetImage('assets/images/default.jpg')
-        : NetworkImage(url);
   }
 }

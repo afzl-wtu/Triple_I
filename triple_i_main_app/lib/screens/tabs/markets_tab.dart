@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' as el;
+import 'package:syncfusion_flutter_sliders/sliders.dart';
+
 import 'package:main/bloc/profile.dart';
 import 'package:main/bloc/sectorperformance.dart';
 import 'package:main/helpers/color_helper.dart';
@@ -10,9 +13,8 @@ import 'package:main/models/markets/sector_performance/sector_performance_model.
 import 'package:main/screens/profile.dart';
 import 'package:main/widgets/empty_screen.dart';
 import 'package:main/widgets/loading_indicator.dart';
-import 'package:syncfusion_flutter_sliders/sliders.dart';
 
-class USMarket extends StatelessWidget {
+class MarketsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -198,16 +200,16 @@ class _SectorPerformanceState extends State<SectorPerformance> {
                 value: _value,
                 labelFormatterCallback: (val, text) {
                   return val == 0.0
-                      ? 'Now'
+                      ? 'Now'.tr()
                       : val == 1.0
-                          ? '1 D'
+                          ? '1 D'.tr()
                           : val == 2.0
-                              ? '5 D'
+                              ? '5 D'.tr()
                               : val == 3.0
-                                  ? '1 M'
+                                  ? '1 M'.tr()
                                   : val == 4.0
-                                      ? '1 Y'
-                                      : '10 Y';
+                                      ? '1 Y'.tr()
+                                      : '10 Y'.tr();
                 },
                 interval: 1,
                 showTicks: true,
@@ -249,7 +251,7 @@ class _SectorPerformanceState extends State<SectorPerformance> {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: ListTile(
               contentPadding: EdgeInsets.zero,
-              title: Text(sectorPerformance.name,
+              title: Text(sectorPerformance.name.tr(),
                   style: TextStyle(color: Colors.black)),
               trailing: Container(
                 decoration: BoxDecoration(
