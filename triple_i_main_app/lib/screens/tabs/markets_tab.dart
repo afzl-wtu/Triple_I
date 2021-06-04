@@ -216,7 +216,10 @@ class _SectorPerformanceState extends State<SectorPerformance> {
                 showLabels: true,
                 onChanged: (dynamic value) {
                   setState(() {
-                    _value = value;
+                    _value = el.EasyLocalization.of(context).currentLocale ==
+                            Locale('en')
+                        ? value
+                        : 5 - value;
                   });
                 },
               ),
