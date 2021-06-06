@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:main/repository/news/repository.dart';
-import 'package:main/repository/storage_client.dart';
 import 'package:meta/meta.dart';
 
 import '../../helpers/sentry_helper.dart';

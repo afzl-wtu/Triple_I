@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/profile.dart';
 import '../../bloc/search.dart';
 import '../../models/search.dart';
-import '../profile.dart';
+import '../profile_screen.dart';
 
 class SearchHistoryWidget extends StatelessWidget {
   final StockSearch search;
@@ -26,7 +26,7 @@ class SearchHistoryWidget extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (_) => Profile(symbol: search.symbol)));
+                  builder: (_) => ProfileScreen(symbol: search.symbol)));
 
           BlocProvider.of<ProfileBloc>(context)
               .add(FetchProfileData(symbol: search.symbol));

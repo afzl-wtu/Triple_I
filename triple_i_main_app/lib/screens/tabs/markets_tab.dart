@@ -10,9 +10,10 @@ import 'package:main/helpers/color_helper.dart';
 import 'package:main/models/markets/market_active/market_active.dart';
 import 'package:main/models/markets/market_active/market_active_model.dart';
 import 'package:main/models/markets/sector_performance/sector_performance_model.dart';
-import 'package:main/screens/profile.dart';
 import 'package:main/widgets/empty_screen.dart';
 import 'package:main/widgets/loading_indicator.dart';
+
+import '../profile_screen.dart';
 
 class MarketsTab extends StatelessWidget {
   @override
@@ -134,8 +135,10 @@ class MarketMovers extends StatelessWidget {
             .add(FetchProfileData(symbol: data.ticker));
 
         // Send to Profile.
-        Navigator.push(context,
-            MaterialPageRoute(builder: (_) => Profile(symbol: data.ticker)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => ProfileScreen(symbol: data.ticker)));
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

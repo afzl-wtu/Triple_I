@@ -23,7 +23,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       print('In try Block of _loadContent;');
       indexes = await _repository.fetchIndexes();
       yield HomeLoaded(indexes: indexes);
-    } catch (e, stack) {
+    } catch (e, _) {
       print(
           'In _loadContent in HomeBloc: Error value of e: $e and value of indexes is: $indexes');
     }

@@ -1,25 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:main/models/news/news.dart';
-import 'package:main/models/profile/stock_profile.dart';
-import 'package:main/models/profile/stock_quote.dart';
-import 'package:main/repository/news/repository.dart';
-import 'package:main/screens/components/news_tile.dart';
-import 'package:main/screens/components/profile/profile_summary.dart';
+import 'package:main/bloc/profile.dart';
+import 'package:main/helpers/color_helper.dart';
+import 'package:main/screens/profile_tabs/forum_tab.dart';
+import 'package:main/screens/profile_tabs/newslist_tab.dart';
+import 'package:main/screens/profile_tabs/summary_tab.dart';
 import 'package:main/widgets/backgroundGrad.dart';
-import 'package:main/widgets/loading_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:main/widgets/empty_screen.dart';
+import 'package:main/widgets/loading_indicator.dart';
 
-import '../../../models/profile/profile.dart';
-import '../../../models/storage.dart';
-import './profile.dart';
+import '../../models/profile/profile.dart';
+import '../../models/storage.dart';
+import 'profile_tabs/chart_tab.dart';
 
-class ProfileScreen extends StatefulWidget {
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class ProfileScreen extends StatelessWidget {
+  final String symbol;
+
+  ProfileScreen({
+    @required this.symbol,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (BuildContext context, ProfileState state) {
+      if (state is ProfileLoadingError) {
+        return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Color.fromRGBO(65, 190, 186, 1),
+              title: Text(':('),
+            ),
+            backgroundColor: Colors.black,
+            body: Center(child: EmptyScreen(message: state.error)));
+      }
+
+      if (state is ProfileLoaded) {
+        return ProfileScreen2(
+            isSaved: state.isSymbolSaved,
+            profile: state.profileModel,
+            color: determineColorBasedOnChange(
+                state.profileModel.stockProfile.changes));
+      }
+
+      return Scaffold(
+          body: Stack(children: [
+        BackgroundImage(),
+        Center(child: LoadingIndicatorWidget())
+      ]));
+    });
+  }
+}
+
+class ProfileScreen2 extends StatefulWidget {
   final bool isSaved;
   final Color color;
   final ProfileModel profile;
 
-  ProfileScreen({
+  ProfileScreen2({
     @required this.isSaved,
     @required this.profile,
     @required this.color,
@@ -29,7 +69,7 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen>
+class _ProfileScreenState extends State<ProfileScreen2>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
   @override
@@ -81,7 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                 stockProfile: widget.profile.stockProfile,
                 stockQuote: widget.profile.stockQuote,
               ),
-              Profile(
+              ChartTab(
                 color: widget.color,
                 stockProfile: null,
                 stockChart: widget.profile.stockChart,
@@ -92,67 +132,6 @@ class _ProfileScreenState extends State<ProfileScreen>
             ])
           ],
         ));
-  }
-}
-
-class ForumTab extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center();
-  }
-}
-
-class SummaryTab extends StatelessWidget {
-  final StockQuote stockQuote;
-
-  final StockProfile stockProfile;
-
-  const SummaryTab({@required this.stockQuote, @required this.stockProfile});
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: StatisticsWidget(
-          quote: stockQuote,
-          profile: stockProfile,
-        ),
-      ),
-    );
-  }
-}
-
-class NewsListTab extends StatelessWidget {
-  final nc = NewsRepository();
-  final String companySymbol;
-  NewsListTab(this.companySymbol);
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: nc.fetchNews(specificSymbol: companySymbol),
-      builder: (_, data) {
-        if (!(data.connectionState == ConnectionState.waiting)) {
-          final newsList = (data.data as NewsDataModel).news;
-          return ListView.builder(
-              itemCount: newsList.length,
-              shrinkWrap: true,
-              physics: ClampingScrollPhysics(),
-              itemBuilder: (context, index) {
-                return NewsTile(
-                  imgUrl: newsList[index].urlToImage ?? "",
-                  title: newsList[index].title ?? "",
-                  desc: newsList[index].description ?? "",
-                  //Todo: May be translate it.
-                  content: "Here is Content",
-                  posturl: newsList[index].url ?? "",
-                );
-              });
-        } else {
-          return LoadingIndicatorWidget();
-        }
-      },
-    );
   }
 }
 

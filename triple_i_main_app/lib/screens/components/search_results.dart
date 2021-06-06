@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:main/screens/profile_screen.dart';
 
 import '../../bloc/profile.dart';
 import '../../bloc/search.dart';
 import '../../models/search.dart';
-import '../profile.dart';
 
 class SearchResultsWidget extends StatelessWidget {
   final StockSearch search;
@@ -23,8 +23,10 @@ class SearchResultsWidget extends StatelessWidget {
         style: TextStyle(color: Colors.black),
       ),
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (_) => Profile(symbol: search.symbol)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => ProfileScreen(symbol: search.symbol)));
 
         // Save event.
         BlocProvider.of<SearchBloc>(context)

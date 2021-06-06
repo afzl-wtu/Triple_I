@@ -16,7 +16,7 @@ class SettingsScreen extends StatelessWidget {
             subtitle: Text(
               EasyLocalization.of(context).locale.languageCode == 'en'
                   ? 'English'
-                  : 'עברים',
+                  : 'עברית',
             ),
           ),
         ],
@@ -32,7 +32,7 @@ class LanguagesScreen extends StatelessWidget {
       appBar: AppBar(),
       body: ListView.separated(
         itemBuilder: (_, i) => ListTile(
-          title: Text(i == 0 ? 'English' : 'עברים‎'),
+          title: Text(i == 0 ? 'English' : 'עברית‎'),
           onTap: () => context.setLocale(
             Locale(i == 0 ? 'en' : 'he'),
           ),

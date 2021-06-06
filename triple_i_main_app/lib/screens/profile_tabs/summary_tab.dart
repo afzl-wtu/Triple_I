@@ -1,9 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:main/helpers/text_helper.dart';
+import 'package:main/models/profile/stock_profile.dart';
+import 'package:main/models/profile/stock_quote.dart';
 
-import '../../../helpers/text_helper.dart';
-import '../../../models/profile/stock_profile.dart';
-import '../../../models/profile/stock_quote.dart';
+class SummaryTab extends StatelessWidget {
+  final StockQuote stockQuote;
+
+  final StockProfile stockProfile;
+
+  const SummaryTab({@required this.stockQuote, @required this.stockProfile});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: StatisticsWidget(
+          quote: stockQuote,
+          profile: stockProfile,
+        ),
+      ),
+    );
+  }
+}
 
 class StatisticsWidget extends StatelessWidget {
   final StockQuote quote;
