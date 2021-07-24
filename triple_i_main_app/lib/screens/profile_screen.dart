@@ -124,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen2>
               ChartTab(
                 color: widget.color,
                 stockProfile: null,
-                stockChart: widget.profile.stockChart,
+                //stockChart: widget.profile.stockChart,
                 stockQuote: widget.profile.stockQuote,
               ),
               NewsListTab(widget.profile.stockQuote.symbol),

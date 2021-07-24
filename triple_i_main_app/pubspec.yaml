@@ -23,12 +23,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  k_chart:
+    git:
+      url: https://github.com/frankie060392/k_chart
   bloc: ^7.0.0
   bottom_navy_bar: ^6.0.0
   cached_network_image: ^3.0.0
   charts_flutter: ^0.10.0
   cloud_firestore: ^1.0.3
   data_connection_checker: ^0.3.4
+  date_range_picker: ^1.0.7
   dio: ^4.0.0
   easy_localization: ^3.0.0
   firebase_core: ^1.0.2
@@ -45,9 +49,6 @@ dependencies:
   sembast: ^3.0.0+4
   sentry: ^5.0.0
   syncfusion_flutter_sliders: ^19.1.66-beta
-  k_chart:
-    git:
-      url: https://github.com/frankie060392/k_chart
   tuple: ^2.0.0
   url_launcher: ^6.0.3
   webview_flutter: ^2.0.4
