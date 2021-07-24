@@ -6,7 +6,7 @@ import 'package:main/widgets/loading_indicator.dart';
 
 class NewsListTab extends StatelessWidget {
   final nc = NewsRepository();
-  final String companySymbol;
+  final String? companySymbol;
   NewsListTab(this.companySymbol);
   @override
   Widget build(BuildContext context) {

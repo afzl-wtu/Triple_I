@@ -11,7 +11,7 @@ class NewsError extends NewsState {
   final String message;
 
   NewsError({
-    @required this.message
+    required this.message
   });
 }
 
@@ -19,6 +19,6 @@ class NewsLoaded extends NewsState {
   final List<NewsDataModel> news;
 
   NewsLoaded({
-    @required this.news
+    required this.news
   });
 }

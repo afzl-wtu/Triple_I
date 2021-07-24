@@ -1,20 +1,20 @@
 import 'package:meta/meta.dart';
 
 class SingleNewModel {
-  final String source;
-  final String title;
-  final String url;
-  final String urlToImage;
-  final String publishedAt;
-  final String description;
+  final String? source;
+  final String? title;
+  final String? url;
+  final String? urlToImage;
+  final String? publishedAt;
+  final String? description;
 
   SingleNewModel(
-      {@required this.description,
-      @required this.source,
-      @required this.title,
-      @required this.url,
-      @required this.urlToImage,
-      @required this.publishedAt});
+      {required this.description,
+      required this.source,
+      required this.title,
+      required this.url,
+      required this.urlToImage,
+      required this.publishedAt});
 
   factory SingleNewModel.fromJson(Map<String, dynamic> json) {
     return SingleNewModel(
@@ -38,13 +38,13 @@ class SingleNewModel {
     );
   }
 
-  static List<SingleNewModel> toList(List<dynamic> items,
+  static List<SingleNewModel> toList(List<dynamic>? items,
       [bool finnhub = false]) {
     List<SingleNewModel> testList;
     finnhub == false
-        ? testList = items.map((item) => SingleNewModel.fromJson(item)).toList()
+        ? testList = items!.map((item) => SingleNewModel.fromJson(item)).toList()
         : testList =
-            items.map((item) => SingleNewModel.fromJsonFinnhub(item)).toList();
+            items!.map((item) => SingleNewModel.fromJsonFinnhub(item)).toList();
     print('PP in toList method testList: $testList');
     return testList;
   }

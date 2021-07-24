@@ -78,20 +78,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  charts_common:
-    dependency: transitive
-    description:
-      name: charts_common
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.10.0"
-  charts_flutter:
-    dependency: "direct main"
-    description:
-      name: charts_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.10.0"
   clock:
     dependency: transitive
     description:
@@ -381,19 +367,10 @@ packages:
   k_chart:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: fb294f6db8d2fad7db0098a01dda9c814bb16a3b
-      url: "https://github.com/frankie060392/k_chart"
-    source: git
-    version: "0.1.2"
-  logging:
-    dependency: transitive
-    description:
-      name: logging
+      name: k_chart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "0.4.0"
   matcher:
     dependency: transitive
     description:
@@ -436,20 +413,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
-  path_drawing:
-    dependency: transitive
-    description:
-      name: path_drawing
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.1"
-  path_parsing:
-    dependency: transitive
-    description:
-      name: path_parsing
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.1"
   path_provider:
     dependency: "direct main"
     description:

@@ -9,7 +9,7 @@ class SummaryTab extends StatelessWidget {
 
   final StockProfile stockProfile;
 
-  const SummaryTab({@required this.stockQuote, @required this.stockProfile});
+  const SummaryTab({required this.stockQuote, required this.stockProfile});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class StatisticsWidget extends StatelessWidget {
   final StockQuote quote;
   final StockProfile profile;
 
-  StatisticsWidget({@required this.quote, @required this.profile});
+  StatisticsWidget({required this.quote, required this.profile});
 
   static Text _renderText(dynamic text) {
     return text != null ? Text(compactText(text)) : Text('-');
@@ -117,13 +117,13 @@ class StatisticsWidget extends StatelessWidget {
         ListTile(
           contentPadding: EdgeInsets.zero,
           title: Text('CEO'.tr(), style: TextStyle(color: Colors.white)),
-          trailing: Text(displayDefaultTextIfNull(profile.ceo)),
+          trailing: Text(displayDefaultTextIfNull(profile.ceo!)),
         ),
         Divider(),
         ListTile(
           contentPadding: EdgeInsets.zero,
           title: Text('Sector'.tr(), style: TextStyle(color: Colors.white)),
-          trailing: Text(displayDefaultTextIfNull(profile.sector)),
+          trailing: Text(displayDefaultTextIfNull(profile.sector!)),
         ),
         Divider(),
         ListTile(

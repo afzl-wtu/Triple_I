@@ -53,7 +53,7 @@ class CustomDrawer extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              drawerKey.currentState.closeDrawer();
+              drawerKey.currentState!.closeDrawer();
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => SettingsScreen(),

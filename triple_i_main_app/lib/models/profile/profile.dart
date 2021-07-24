@@ -10,8 +10,8 @@ class ProfileModel {
   //final List<StockChart> stockChart;
 
   ProfileModel({
-    @required this.stockProfile,
-    @required this.stockQuote,
+    required this.stockProfile,
+    required this.stockQuote,
     //@required this.stockChart,
   });
 }

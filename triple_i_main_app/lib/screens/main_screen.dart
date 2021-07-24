@@ -49,7 +49,7 @@ class _MainScreenState extends State<MainScreen> {
     return Material(
       child: SliderMenuContainer(
         slideDirection:
-            EasyLocalization.of(context).currentLocale == Locale('he')
+            EasyLocalization.of(context)!.currentLocale == Locale('he')
                 ? SlideDirection.RIGHT_TO_LEFT
                 : SlideDirection.LEFT_TO_RIGHT,
         key: _drawerKey,

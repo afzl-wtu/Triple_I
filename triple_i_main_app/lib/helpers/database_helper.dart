@@ -15,7 +15,7 @@ class DatabaseManager {
   static DatabaseManager get instance => _database;
 
   // Completer
-  Completer<Database> _databaseCompleter;
+  Completer<Database>? _databaseCompleter;
 
   // Private constructor.
   DatabaseManager._();
@@ -31,7 +31,7 @@ class DatabaseManager {
     }
 
     // Return the database.
-    return _databaseCompleter.future;
+    return _databaseCompleter!.future;
   }
 
   // Open database
@@ -43,7 +43,7 @@ class DatabaseManager {
     // Open Database.
     final Database database = await databaseFactoryIo.openDatabase(databasePath);
     // Complete _databaseCompleter
-    _databaseCompleter.complete(database);
+    _databaseCompleter!.complete(database);
   }
 
 }

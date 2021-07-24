@@ -1,5 +1,5 @@
 class StockChangeColor {
-  final double changesPercentage;
+  final double? changesPercentage;
 
   StockChangeColor({
     this.changesPercentage,

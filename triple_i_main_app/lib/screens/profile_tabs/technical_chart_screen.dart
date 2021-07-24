@@ -2,9 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:k_chart/flutter_k_chart.dart';
-import 'package:k_chart/k_chart_widget.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
+import 'package:main/repository/k_chart/flutter_k_chart.dart';
 import 'package:main/widgets/backgroundGrad.dart';
 import 'package:main/widgets/loading_indicator.dart';
 
@@ -30,7 +29,6 @@ class _TechnicalChartScreenState extends State<TechnicalChartScreen> {
   @override
   void initState() {
     SystemChrome.setEnabledSystemUIOverlays([]);
-    DataUtil.calculate(widget.durationChart['${widget.currentDuration}']);
     print('PP: in chart screen initState');
     super.initState();
   }
@@ -61,8 +59,8 @@ class _TechnicalChartScreenState extends State<TechnicalChartScreen> {
   Widget build(BuildContext context) {
     print('PP: in chartscreen build method');
     if (!_isJumpingback) _jumpBack();
-    // if (widget.durationChart['${widget.currentDuration}'] == null)
-    //   widget.durationController('1day', nextScreen: true);
+    if (widget.durationChart['${widget.currentDuration}'] == null)
+      widget.durationController('1day', nextScreen: true);
     return Scaffold(
       body: (_isLoading)
           ? Stack(children: [
@@ -75,22 +73,22 @@ class _TechnicalChartScreenState extends State<TechnicalChartScreen> {
               Row(
                 children: [
                   buildDummyColumn(),
-                  Expanded(
-                    child: KChartWidget(
-                      widget.durationChart['${widget.currentDuration}'],
-                      isLine: isLine,
-                      mainState: _mainState,
-                      secondaryState: _secondaryState,
-                      fixedLength: 2,
-                      timeFormat: TimeFormat.YEAR_MONTH_DAY,
-                      isChinese: false,
-                      bgColor: [
-                        Color(0xFF121128),
-                        Color(0xFF121128),
-                        Color(0xFF121128)
-                      ],
-                    ),
-                  ),
+                  Expanded(child: Container()
+                      // KChartWidget(
+                      //   widget.durationChart['${widget.currentDuration}'],
+                      //   isLine: isLine,
+                      //   mainState: _mainState,
+                      //   secondaryState: _secondaryState,
+                      //   fixedLength: 2,
+                      //   timeFormat: TimeFormat.YEAR_MONTH_DAY,
+                      //   isChinese: false,
+                      //   bgColor: [
+                      //     Color(0xFF121128),
+                      //     Color(0xFF121128),
+                      //     Color(0xFF121128)
+                      //   ],
+                      // ),
+                      ),
                 ],
               ),
               Row(
@@ -232,7 +230,7 @@ class _TechnicalChartScreenState extends State<TechnicalChartScreen> {
         from: _response[0], to: _response[1], nextScreen: true);
   }
 
-  Widget button(String text, {VoidCallback onPressed, bool selected = false}) {
+  Widget button(String text, {VoidCallback? onPressed, bool selected = false}) {
     return SizedBox(
       width: 50.0,
       height: 30.0,

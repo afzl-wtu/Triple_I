@@ -55,14 +55,14 @@ class CssLike {
     final colors = <Color>[];
     final stops = <double>[];
 
-    if ((colorStopList ?? const <String>[]).isEmpty) {
+    if ((colorStopList).isEmpty) {
       throw const FormatException(
           // ignore: lines_longer_than_80_chars
           'The "colorStopList" argument can be set up to three, separated by spaces, such as "yellow 40% 60%".');
     }
 
     for (final param in colorStopList) {
-      String colorCode, percentage1, percentage2;
+      String? colorCode, percentage1, percentage2;
 
       final splitParam = param.split(' ');
       if (splitParam.length > 0) {
@@ -80,7 +80,7 @@ class CssLike {
             'The "colorStopList" argument can be set up to three, separated by spaces, such as "yellow 40% 60%".');
       }
 
-      final color = _codeToColor(colorCode);
+      final color = _codeToColor(colorCode!);
       final stop1 = _percentageStringToStop(percentage1);
       if ((percentage2 ?? '').isEmpty) {
         colors.add(color);
@@ -118,11 +118,11 @@ class CssLike {
     return Tuple2<List<Color>, List<double>>(colors, stops);
   }
 
-  static double _percentageStringToStop(String percentageString) {
+  static double _percentageStringToStop(String? percentageString) {
     if ((percentageString ?? '').isEmpty) {
       return double.nan;
     }
-    if (!percentageString.endsWith('%')) {
+    if (!percentageString!.endsWith('%')) {
       throw const FormatException(
           'Bad stop format (Allow percentage strings like "12.34%").');
     }

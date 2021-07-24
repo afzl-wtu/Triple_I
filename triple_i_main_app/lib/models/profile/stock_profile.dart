@@ -1,16 +1,16 @@
 class StockProfile {
-  final double price;
-  final String beta;
-  final String volAvg;
-  final String mktCap;
-  final double changes;
-  final String changesPercentage;
-  final String companyName;
-  final String exchange;
-  final String industry;
-  final String description;
-  final String ceo;
-  final String sector;
+  final double? price;
+  final String? beta;
+  final String? volAvg;
+  final String? mktCap;
+  final double? changes;
+  final String? changesPercentage;
+  final String? companyName;
+  final String? exchange;
+  final String? industry;
+  final String? description;
+  final String? ceo;
+  final String? sector;
 
   StockProfile({
     this.price,

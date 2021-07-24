@@ -1,33 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:k_chart/flutter_k_chart.dart';
-import 'package:k_chart/k_chart_widget.dart';
-import 'package:main/helpers/http_helper.dart';
-import 'package:main/keys/api_keys.dart';
+import 'package:main/repository/k_chart/flutter_k_chart.dart';
+//import 'package:main/packages/chart_translations.dart';
+//import 'package:main/packages/flutter_k_chart.dart';
 import 'package:main/repository/profile/client.dart';
 import 'package:main/screens/profile_tabs/technical_chart_screen.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:main/widgets/backgroundGrad.dart';
 import 'package:main/widgets/loading_indicator.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
 
 import '../../../helpers/color_helper.dart';
 import '../../../helpers/text_helper.dart';
-import '../../../models/profile/stock_chart.dart';
 import '../../../models/profile/stock_profile.dart';
 import '../../../models/profile/stock_quote.dart';
 
 class ChartTab extends StatefulWidget {
   final Color color;
   final StockQuote stockQuote;
-  final StockProfile stockProfile;
+  final StockProfile? stockProfile;
   //final List<StockChart> stockChart;
 
   ChartTab({
-    @required this.color,
-    @required this.stockProfile,
-    @required this.stockQuote,
+    required this.color,
+    required this.stockProfile,
+    required this.stockQuote,
     // @required this.stockChart,
   });
 
@@ -36,18 +31,23 @@ class ChartTab extends StatefulWidget {
 }
 
 class _ChartTabState extends State<ChartTab> {
-  bool _isLoading;
+  bool? _isLoading;
   Map<String, List<KLineEntity>> _durationCharts = {};
   String _currentDuration = '1day';
-  DateTime _from;
-  DateTime _to;
+  DateTime? _from;
+  DateTime? _to;
   bool _isMovingToNextScreen = false;
+  MainState _mainState = MainState.MA;
+  bool _volHidden = false;
+  SecondaryState _secondaryState = SecondaryState.MACD;
+  bool isLine = true;
+  bool isChinese = false;
+  bool _hideGrid = false;
+  bool _showNowPrice = true;
+  bool isChangeUI = false;
 
-  MainState _mainState = MainState.NONE;
-
-  SecondaryState _secondaryState = SecondaryState.NONE;
-
-  bool isLine = false;
+  ChartStyle chartStyle = ChartStyle();
+  ChartColors chartColors = ChartColors();
 
   @override
   void initState() {
@@ -74,8 +74,8 @@ class _ChartTabState extends State<ChartTab> {
   }
 
   bool _isNextScreen = false;
-  Future<void> _durationController(String duration,
-      {DateTime from, DateTime to, bool nextScreen = false}) async {
+  Future<void> _durationController(String? duration,
+      {DateTime? from, DateTime? to, bool nextScreen = false}) async {
     if (nextScreen) _isMovingToNextScreen = false;
     _isNextScreen = nextScreen;
     if (duration != null) _currentDuration = duration;
@@ -83,10 +83,14 @@ class _ChartTabState extends State<ChartTab> {
     _to = to;
     print('PP: in _durationController before await _getData');
     await _getData();
+
+    DataUtil.calculate(_durationCharts['$_currentDuration']!);
     print(
         'PP: in _durationController before setState and after await _getData');
-    if (_isNextScreen) _jumpToScreen();
-    setState(() {});
+    if (_isNextScreen)
+      _jumpToScreen();
+    else
+      setState(() {});
   }
 
   Future<void> _jumpToScreen() async {
@@ -152,20 +156,39 @@ class _ChartTabState extends State<ChartTab> {
                 return LoadingIndicatorWidget();
               else {
                 if (!_isMovingToNextScreen) _jumper();
-                return KChartWidget(
-                  _durationCharts['$_currentDuration'],
-                  isLine: isLine,
-                  mainState: _mainState,
-                  secondaryState: _secondaryState,
-                  fixedLength: 1,
-                  timeFormat: TimeFormat.YEAR_MONTH_DAY,
-                  isChinese: false,
-                  bgColor: [
-                    Color(0xFF121128),
-                    Color(0xFF121128),
-                    Color(0xFF121128)
-                  ],
-                );
+                return Container()
+                    // KChartWidget(
+                    //   _durationCharts['$_currentDuration'],
+                    //   chartStyle,
+                    //   chartColors,
+                    //   isLine: isLine,
+                    //   mainState: _mainState,
+                    //   volHidden: _volHidden,
+                    //   secondaryState: _secondaryState,
+                    //   fixedLength: 2,
+                    //   timeFormat: TimeFormat.YEAR_MONTH_DAY,
+                    //   translations: kChartTranslations,
+                    //   showNowPrice: _showNowPrice,
+                    //   //`isChinese` is Deprecated, Use `translations` instead.
+                    //   isChinese: false,
+                    //   hideGrid: _hideGrid,
+                    //   maDayList: [1, 100, 1000],
+                    // )
+                    // KChartWidget(
+                    //   _durationCharts['$_currentDuration'],
+                    //   isLine: isLine,
+                    //   mainState: _mainState,
+                    //   secondaryState: _secondaryState,
+                    //   fixedLength: 1,
+                    //   timeFormat: TimeFormat.YEAR_MONTH_DAY,
+                    //   isChinese: false,
+                    //   bgColor: [
+                    //     Color(0xFF121128),
+                    //     Color(0xFF121128),
+                    //     Color(0xFF121128)
+                    //   ],
+                    // )
+                    ;
               }
             },
           ),
@@ -230,6 +253,46 @@ class _ChartTabState extends State<ChartTab> {
         onPressed: () => _mainState = MainState.NONE,
         selected: _mainState == MainState.NONE,
       ),
+      button("Time Mode", onPressed: () => isLine = true),
+      button("K Line Mode", onPressed: () => isLine = false),
+      button("Line:MA", onPressed: () => _mainState = MainState.MA),
+      button("Line:BOLL", onPressed: () => _mainState = MainState.BOLL),
+      button("Hide Line", onPressed: () => _mainState = MainState.NONE),
+      button("Secondary Chart:MACD",
+          onPressed: () => _secondaryState = SecondaryState.MACD),
+      button("Secondary Chart:KDJ",
+          onPressed: () => _secondaryState = SecondaryState.KDJ),
+      button("Secondary Chart:RSI",
+          onPressed: () => _secondaryState = SecondaryState.RSI),
+      button("Secondary Chart:WR",
+          onPressed: () => _secondaryState = SecondaryState.WR),
+      button("Secondary Chart:CCI",
+          onPressed: () => _secondaryState = SecondaryState.CCI),
+      button("Secondary Chart:Hide",
+          onPressed: () => _secondaryState = SecondaryState.NONE),
+      button(_volHidden ? "Show Vol" : "Hide Vol",
+          onPressed: () => _volHidden = !_volHidden),
+      button("Change Language", onPressed: () => isChinese = !isChinese),
+      button(_hideGrid ? "Show Grid" : "Hide Grid",
+          onPressed: () => _hideGrid = !_hideGrid),
+      button(_showNowPrice ? "Hide Now Price" : "Show Now Price",
+          onPressed: () => _showNowPrice = !_showNowPrice),
+      button("Customize UI", onPressed: () {
+        setState(() {
+          this.isChangeUI = !this.isChangeUI;
+          if (this.isChangeUI) {
+            chartColors.selectBorderColor = Colors.red;
+            chartColors.selectFillColor = Colors.red;
+            chartColors.lineFillColor = Colors.red;
+            chartColors.kLineColor = Colors.yellow;
+          } else {
+            chartColors.selectBorderColor = Color(0xff6C7A86);
+            chartColors.selectFillColor = Color(0xff0D1722);
+            chartColors.lineFillColor = Color(0x554C86CD);
+            chartColors.kLineColor = Color(0xff4C86CD);
+          }
+        });
+      }),
       button(
         "1m",
         onPressed: () => _durationController('1min'),
@@ -263,7 +326,7 @@ class _ChartTabState extends State<ChartTab> {
     ];
   }
 
-  Widget button(String text, {VoidCallback onPressed, bool selected = false}) {
+  Widget button(String text, {VoidCallback? onPressed, bool selected = false}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
@@ -303,61 +366,4 @@ class _ChartTabState extends State<ChartTab> {
         lastDate: DateTime.now());
     _durationController('1day', from: _response[0], to: _response[1]);
   }
-
-  Widget _buildPrice() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text('\$${formatText(widget.stockQuote.price)}',
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          SizedBox(height: 8),
-          Text(
-              '${determineTextBasedOnChange(widget.stockQuote.change)}  (${determineTextPercentageBasedOnChange(widget.stockQuote.changesPercentage)})',
-              style: determineTextStyleBasedOnChange(widget.stockQuote.change))
-        ],
-      ),
-    );
-  }
-}
-
-class SimpleTimeSeriesChart extends StatelessWidget {
-  final List<StockChart> chart;
-
-  final Color color;
-
-  SimpleTimeSeriesChart({@required this.chart, @required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return charts.TimeSeriesChart(
-      [
-        charts.Series<RowData, DateTime>(
-          id: 'Cost',
-          colorFn: (_, __) => charts.ColorUtil.fromDartColor(color),
-          domainFn: (RowData row, _) => row.timeStamp,
-          measureFn: (RowData row, _) => row.cost,
-          data: this
-              .chart
-              .map((item) => RowData(
-                  timeStamp: DateTime.parse(item.date), cost: item.close))
-              .toList(),
-        ),
-      ],
-      animate: false,
-      primaryMeasureAxis: charts.NumericAxisSpec(
-          tickProviderSpec:
-              charts.BasicNumericTickProviderSpec(desiredTickCount: 1),
-          renderSpec: charts.NoneRenderSpec()),
-    );
-  }
-}
-
-/// Sample time series data type.
-class RowData {
-  final DateTime timeStamp;
-  final double cost;
-  RowData({this.timeStamp, this.cost});
 }

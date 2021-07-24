@@ -15,7 +15,7 @@ class SearchClient {
       await DatabaseManager.instance.database;
 
   // Returns search results
-  Future<List<StockSearch>> searchStock({String symbol}) async {
+  Future<List<StockSearch>> searchStock({String? symbol}) async {
     final Uri uri = Uri.https('www.alphavantage.co', '/query', {
       'function': 'SYMBOL_SEARCH',
       'keywords': symbol,
@@ -40,12 +40,12 @@ class SearchClient {
   }
 
   // Saves a symbol in the database.
-  Future<void> save({String symbol}) async {
+  Future<void> save({String? symbol}) async {
     await _store.add(await _database, {'symbol': symbol});
   }
 
   // Deletes a symbol from the database.
-  Future<void> delete({String symbol}) async {
+  Future<void> delete({required String symbol}) async {
     final finder = Finder(filter: Filter.matches('symbol', symbol));
     final response = await _store.findKey(await _database, finder: finder);
     final deleteFinder = Finder(filter: Filter.byKey(response));

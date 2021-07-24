@@ -46,16 +46,16 @@ class ArticlesTab extends StatelessWidget {
           backgroundColor: Colors.transparent,
         ),
         Expanded(
-          child: FutureBuilder(
+          child: FutureBuilder<List<Article>>(
               future: articleslist(),
               builder: (_, snap) {
                 return snap.connectionState == ConnectionState.waiting
                     ? LoadingIndicatorWidget()
-                    : snap.data.length == 0
+                    : snap.data!.length == 0
                         ? Center(
                             child: Text('No Articles Currently'),
                           )
-                        : _buildGrid(snap.data, context);
+                        : _buildGrid(snap.data ?? [], context);
               }),
         )
       ],
@@ -94,9 +94,9 @@ class ArticlesTab extends StatelessWidget {
                           image: DecorationImage(
                             fit: BoxFit.fill,
                             image: CachedNetworkImageProvider(
-                                data[i].image.isNotEmpty
-                                    ? data[i].image
-                                    : data[i].images[0]),
+                                data[i].image!.isNotEmpty
+                                    ? data[i].image!
+                                    : data[i].images![0]),
                           ),
                         ),
                       ),
@@ -106,7 +106,7 @@ class ArticlesTab extends StatelessWidget {
                           border: Border.all(color: Colors.white)),
                       child: GridTileBar(
                         backgroundColor: Colors.transparent,
-                        title: Text(data[i].title),
+                        title: Text(data[i].title!),
                       ),
                     ),
                   ],

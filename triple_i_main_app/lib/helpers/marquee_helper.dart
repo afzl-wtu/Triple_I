@@ -12,7 +12,7 @@ class Marquee extends StatelessWidget {
   final Curve backwardAnimation;
 
   Marquee(
-      {@required this.child,
+      {required this.child,
       this.direction = Axis.horizontal,
       this.textDirection = TextDirection.ltr,
       this.animationDuration = const Duration(milliseconds: 5000),

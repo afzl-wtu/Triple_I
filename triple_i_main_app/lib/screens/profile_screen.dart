@@ -17,10 +17,10 @@ import 'profile_tabs/chart_tab.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final String symbol;
+  final String? symbol;
 
   ProfileScreen({
-    @required this.symbol,
+    required this.symbol,
   });
 
   @override
@@ -42,7 +42,7 @@ class ProfileScreen extends StatelessWidget {
             isSaved: state.isSymbolSaved,
             profile: state.profileModel,
             color: determineColorBasedOnChange(
-                state.profileModel.stockProfile.changes));
+                state.profileModel.stockProfile.changes!));
       }
 
       return Scaffold(
@@ -60,9 +60,9 @@ class ProfileScreen2 extends StatefulWidget {
   final ProfileModel profile;
 
   ProfileScreen2({
-    @required this.isSaved,
-    @required this.profile,
-    @required this.color,
+    required this.isSaved,
+    required this.profile,
+    required this.color,
   });
 
   @override
@@ -71,7 +71,7 @@ class ProfileScreen2 extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen2>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  TabController? _tabController;
   @override
   void initState() {
     _tabController = TabController(length: 4, vsync: this);
@@ -84,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen2>
         appBar: AppBar(
           backgroundColor: widget.color,
           centerTitle: true,
-          title: Text(this.widget.profile.stockQuote.symbol),
+          title: Text(this.widget.profile.stockQuote.symbol!),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.of(context).pop(),
@@ -141,22 +141,22 @@ class WatchlistButtonWidget extends StatefulWidget {
   final StorageModel storageModel;
 
   WatchlistButtonWidget(
-      {@required this.color,
-      @required this.isSaved,
-      @required this.storageModel});
+      {required this.color,
+      required this.isSaved,
+      required this.storageModel});
 
   @override
   _WatchlistButtonWidgetState createState() => _WatchlistButtonWidgetState();
 }
 
 class _WatchlistButtonWidgetState extends State<WatchlistButtonWidget> {
-  bool isSaved;
-  Color color;
+  bool? isSaved;
+  Color? color;
 
   @override
   void initState() {
     this.isSaved = this.widget.isSaved;
-    this.color = this.isSaved ? this.widget.color : Color(0X88ffffff);
+    this.color = this.isSaved! ? this.widget.color : Color(0X88ffffff);
 
     super.initState();
   }
@@ -169,7 +169,7 @@ class _WatchlistButtonWidgetState extends State<WatchlistButtonWidget> {
     super.dispose();
   }
 
-  void changeState({bool isSaved, Color color}) {
+  void changeState({bool? isSaved, Color? color}) {
     setState(() {
       this.isSaved = isSaved;
       this.color = color;
@@ -177,7 +177,7 @@ class _WatchlistButtonWidgetState extends State<WatchlistButtonWidget> {
   }
 
   void onPressedHandler() {
-    if (this.isSaved) {
+    if (this.isSaved!) {
       changeState(isSaved: false, color: Color(0X88ffffff));
 //Todos
       //   BlocProvider.of<PortfolioBloc>(context)

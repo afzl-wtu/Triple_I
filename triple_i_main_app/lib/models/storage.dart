@@ -2,12 +2,12 @@ import 'package:meta/meta.dart';
 
 class StorageModel {
   
-  final String symbol;
-  final String companyName;
+  final String? symbol;
+  final String? companyName;
 
   StorageModel({
-    @required this.symbol,
-    @required this.companyName,
+    required this.symbol,
+    required this.companyName,
   });
 
   static List<StorageModel> convertToList(List<dynamic> items) {

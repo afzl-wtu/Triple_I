@@ -39,7 +39,7 @@ class _NewsTabState extends State<NewsTab> {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Column(
                   children: [
-                    marqueeGen(state.indexes),
+                    marqueeGen(state.indexes!),
                     Expanded(
                         child:
                             SingleChildScrollView(child: NewsSectionWidget())),
@@ -72,7 +72,7 @@ class _NewsTabState extends State<NewsTab> {
   }
 
   Widget _buildIndexTile(MarketIndexModel index) {
-    String name;
+    String? name;
     if (index.name == 'Dow Jones Industrial Average') name = 'Dow Jones'.tr();
     if (index.name == 'NASDAQ Composite') name = 'NASDAQ'.tr();
     if (index.name == 'CBOE Volatility Index') name = 'CBOE'.tr();
@@ -93,11 +93,11 @@ class _NewsTabState extends State<NewsTab> {
                 style: TextStyle(fontSize: 16),
               ),
               Card(
-                color: determineColorBasedOnChange(index.change),
+                color: determineColorBasedOnChange(index.change!),
                 child: Padding(
                   padding: const EdgeInsets.all(2.0),
                   child: Text(
-                    '${determineTextBasedOnChange(index.change / index.price * 100)}%',
+                    '${determineTextBasedOnChange(index.change! / index.price! * 100)}%',
                   ),
                 ),
               ),
@@ -156,10 +156,10 @@ class NewsSectionWidget extends StatelessWidget {
 }
 
 class NewsCardWidget extends StatelessWidget {
-  final String title;
+  final String? title;
   final List<SingleNewModel> news;
 
-  NewsCardWidget({@required this.title, @required this.news})
+  NewsCardWidget({required this.title, required this.news})
       : assert(news != null);
 
   @override
@@ -169,7 +169,7 @@ class NewsCardWidget extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Text(this.title.tr(),
+          child: Text(this.title!.tr(),
               style: TextStyle(fontSize: 36, color: Colors.white)),
         ),
         Container(
@@ -192,7 +192,7 @@ class NewsCardWidget extends StatelessWidget {
     return InkWell(
       onTap: () {
         print('PP in Inkwell');
-        launchUrl(singleNew.url);
+        launchUrl(singleNew.url!);
       },
       child: ClipRRect(
         borderRadius: BorderRadius.only(
@@ -206,7 +206,7 @@ class NewsCardWidget extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(bottom: 8, left: 3, right: 2),
                   child: Text(
-                    singleNew.title,
+                    singleNew.title!,
                     style: TextStyle(
                         height: 1.6,
                         fontSize: 14,
@@ -224,7 +224,7 @@ class NewsCardWidget extends StatelessWidget {
                           color: Color.fromRGBO(65, 190, 186, 1),
                         )
                       : CachedNetworkImage(
-                          imageUrl: singleNew.urlToImage,
+                          imageUrl: singleNew.urlToImage!,
                           fit: BoxFit.cover,
                         ),
                 ),

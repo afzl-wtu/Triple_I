@@ -22,7 +22,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
   }
 
-  Stream<ProfileState> _mapProfileState({String symbol}) async* {
+  Stream<ProfileState> _mapProfileState({String? symbol}) async* {
     try {
       yield ProfileLoaded(
           profileModel: await this._httpClient.fetchStockData(symbol: symbol),
@@ -40,9 +40,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 abstract class ProfileEvent {}
 
 class FetchProfileData extends ProfileEvent {
-  final String symbol;
+  final String? symbol;
 
-  FetchProfileData({@required this.symbol});
+  FetchProfileData({required this.symbol});
 }
 
 @immutable
@@ -57,7 +57,7 @@ class ProfileLoading extends ProfileState {}
 class ProfileLoadingError extends ProfileState {
   final dynamic error;
 
-  ProfileLoadingError({@required this.error});
+  ProfileLoadingError({required this.error});
 }
 
 class ProfileLoaded extends ProfileState {
@@ -65,7 +65,7 @@ class ProfileLoaded extends ProfileState {
   final bool isSymbolSaved;
 
   ProfileLoaded({
-    @required this.profileModel,
-    @required this.isSymbolSaved,
+    required this.profileModel,
+    required this.isSymbolSaved,
   });
 }

@@ -7,7 +7,7 @@ import '../../models/news/news.dart';
 import '../../models/news/single_new_model.dart';
 
 class NewsClient extends FetchClient {
-  Future<NewsDataModel> fetchNews({String title, String specificSymbol}) async {
+  Future<NewsDataModel> fetchNews({String? title, String? specificSymbol}) async {
     final Uri newsUri = specificSymbol == null
         ? Uri.https('newsapi.org', '/v2/everything', {
             'q': '"$title"',

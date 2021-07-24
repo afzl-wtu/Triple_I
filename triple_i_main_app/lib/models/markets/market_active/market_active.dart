@@ -1,9 +1,9 @@
 class MarketActiveModel {
-  final String ticker;
-  final double changes;
-  final String price;
-  final String changesPercentage;
-  final String companyName;
+  final String? ticker;
+  final double? changes;
+  final String? price;
+  final String? changesPercentage;
+  final String? companyName;
 
   MarketActiveModel({
     this.ticker,

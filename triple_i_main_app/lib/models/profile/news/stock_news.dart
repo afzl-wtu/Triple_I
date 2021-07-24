@@ -1,13 +1,13 @@
 class StockNews {
-  final String category;
-  final int datetime;
-  final String headline;
-  final int id;
-  final String image;
-  final String related;
-  final String source;
-  final String summary;
-  final String url;
+  final String? category;
+  final int? datetime;
+  final String? headline;
+  final int? id;
+  final String? image;
+  final String? related;
+  final String? source;
+  final String? summary;
+  final String? url;
 
   StockNews({
     this.category,

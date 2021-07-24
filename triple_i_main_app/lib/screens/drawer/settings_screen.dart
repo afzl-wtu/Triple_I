@@ -14,7 +14,7 @@ class SettingsScreen extends StatelessWidget {
             leading: Icon(Icons.language),
             title: Text('Language'),
             subtitle: Text(
-              EasyLocalization.of(context).locale.languageCode == 'en'
+              EasyLocalization.of(context)!.locale.languageCode == 'en'
                   ? 'English'
                   : 'עברית',
             ),

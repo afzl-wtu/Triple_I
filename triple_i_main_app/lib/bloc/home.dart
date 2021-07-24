@@ -37,14 +37,14 @@ class HomeInitial extends HomeState {}
 
 class HomeError extends HomeState {
   final String message;
-  HomeError({@required this.message});
+  HomeError({required this.message});
 }
 
 class HomeLoading extends HomeState {}
 
 class HomeLoaded extends HomeState {
-  final List<MarketIndexModel> indexes;
-  HomeLoaded({@required this.indexes});
+  final List<MarketIndexModel>? indexes;
+  HomeLoaded({required this.indexes});
 }
 
 // class HomeLoaded extends HomeState {

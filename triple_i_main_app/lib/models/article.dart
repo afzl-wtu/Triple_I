@@ -1,13 +1,13 @@
 class Article {
-  final String id;
-  final String description;
-  final DateTime time;
-  final String image;
-  final Language language;
-  final String title;
-  final List<String> images;
-  bool isFavourite;
-  String link;
+  final String? id;
+  final String? description;
+  final DateTime? time;
+  final String? image;
+  final Language? language;
+  final String? title;
+  final List<String>? images;
+  bool? isFavourite;
+  String? link;
 
   Article(
       {this.image,

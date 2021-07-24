@@ -1,34 +1,34 @@
 import 'package:meta/meta.dart';
 
 class StockChart {
-  final String date;
-  final double open;
-  final double high;
-  final double low;
-  final double adjClose;
+  final String? date;
+  final double? open;
+  final double? high;
+  final double? low;
+  final double? adjClose;
   final double volume;
-  final double unadjustedVolume;
-  final double change;
-  final double changePercent;
-  final double vwap;
-  final double changeOverTime;
-  final double close;
-  final String label;
+  final double? unadjustedVolume;
+  final double? change;
+  final double? changePercent;
+  final double? vwap;
+  final double? changeOverTime;
+  final double? close;
+  final String? label;
 
   StockChart({
-    @required this.open,
-    @required this.high,
-    @required this.low,
-    @required this.adjClose,
-    @required this.volume,
-    @required this.unadjustedVolume,
-    @required this.change,
-    @required this.changePercent,
-    @required this.vwap,
-    @required this.changeOverTime,
-    @required this.date,
-    @required this.close,
-    @required this.label,
+    required this.open,
+    required this.high,
+    required this.low,
+    required this.adjClose,
+    required this.volume,
+    required this.unadjustedVolume,
+    required this.change,
+    required this.changePercent,
+    required this.vwap,
+    required this.changeOverTime,
+    required this.date,
+    required this.close,
+    required this.label,
   });
 
   static List<StockChart> toList(List<dynamic> items) {

@@ -10,19 +10,19 @@ class SectorPerformanceModel {
   final SectorPerformanceDataModel realTime;
 
   SectorPerformanceModel({
-    @required this.realTime,
-    @required this.oneDay,
-    @required this.fiveDays,
-    @required this.oneMonth,
-    @required this.oneYear,
-    @required this.tenYears,
+    required this.realTime,
+    required this.oneDay,
+    required this.fiveDays,
+    required this.oneMonth,
+    required this.oneYear,
+    required this.tenYears,
   });
 }
 
 class SectorPerformanceDataModel {
   final List<SingleSectorPerformance> sectors;
 
-  SectorPerformanceDataModel({@required this.sectors});
+  SectorPerformanceDataModel({required this.sectors});
 
   factory SectorPerformanceDataModel.fromJson(Map<String, dynamic> json) {
     return SectorPerformanceDataModel(
@@ -37,5 +37,5 @@ class SingleSectorPerformance {
   final String name;
   final String change;
 
-  SingleSectorPerformance({@required this.name, @required this.change});
+  SingleSectorPerformance({required this.name, required this.change});
 }

@@ -9,7 +9,7 @@ import '../profile_screen.dart';
 class SearchHistoryWidget extends StatelessWidget {
   final StockSearch search;
 
-  SearchHistoryWidget({@required this.search});
+  SearchHistoryWidget({required this.search});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class SearchHistoryWidget extends StatelessWidget {
           color: Colors.black,
         ),
         title: Text(
-          search.symbol,
+          search.symbol!,
           style: TextStyle(color: Colors.black),
         ),
         onTap: () {

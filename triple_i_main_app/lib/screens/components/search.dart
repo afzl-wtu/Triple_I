@@ -22,8 +22,8 @@ Widget buildFloatingSearchBar(
         IconButton(
           icon: AnimatedIcon(
               icon: AnimatedIcons.menu_close,
-              progress: key.currentState.animation),
-          onPressed: key.currentState.toggle,
+              progress: key.currentState!.animation as Animation<double>),
+          onPressed: key.currentState!.toggle,
         )
       ],
       hint: 'Search a Stock...'.tr(),
@@ -98,7 +98,7 @@ Widget searchWindow(context, state) {
   );
 }
 
-Widget _buildWrapper({List<StockSearch> data, ListType listType}) {
+Widget _buildWrapper({required List<StockSearch> data, ListType? listType}) {
   return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),

@@ -1,25 +1,25 @@
 class StockQuote {
-  final String symbol;
-  final String name;
+  final String? symbol;
+  final String? name;
 
-  final double price;
-  final double changesPercentage;
-  final double change;
-  final double dayLow;
-  final double dayHigh;
-  final double yearHigh;
-  final double yearLow;
-  final double marketCap;
+  final double? price;
+  final double? changesPercentage;
+  final double? change;
+  final double? dayLow;
+  final double? dayHigh;
+  final double? yearHigh;
+  final double? yearLow;
+  final double? marketCap;
 
-  final int volume;
-  final int avgVolume;
+  final int? volume;
+  final int? avgVolume;
 
-  final double open;
-  final double previousClose;
-  final double eps;
-  final double pe;
+  final double? open;
+  final double? previousClose;
+  final double? eps;
+  final double? pe;
   
-  final int sharesOutstanding;
+  final int? sharesOutstanding;
 
   StockQuote({
     this.symbol,

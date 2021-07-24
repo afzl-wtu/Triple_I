@@ -4,14 +4,14 @@ import 'dart:async';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsTile extends StatelessWidget {
-  final String imgUrl, title, desc, content, posturl;
+  final String? imgUrl, title, desc, content, posturl;
 
   NewsTile(
       {this.imgUrl,
       this.desc,
       this.title,
       this.content,
-      @required this.posturl});
+      required this.posturl});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class NewsTile extends StatelessWidget {
                   ClipRRect(
                       borderRadius: BorderRadius.circular(6),
                       child: Image.network(
-                        imgUrl,
+                        imgUrl!,
                         height: 200,
                         width: MediaQuery.of(context).size.width,
                         fit: BoxFit.cover,
@@ -51,7 +51,7 @@ class NewsTile extends StatelessWidget {
                     height: 12,
                   ),
                   Text(
-                    title,
+                    title!,
                     maxLines: 2,
                     style: TextStyle(
                         color: Colors.black87,
@@ -62,7 +62,7 @@ class NewsTile extends StatelessWidget {
                     height: 4,
                   ),
                   Text(
-                    desc,
+                    desc!,
                     maxLines: 2,
                     style: TextStyle(color: Colors.black54, fontSize: 14),
                   )
@@ -75,8 +75,8 @@ class NewsTile extends StatelessWidget {
 }
 
 class ArticleView extends StatefulWidget {
-  final String postUrl;
-  ArticleView({@required this.postUrl});
+  final String? postUrl;
+  ArticleView({required this.postUrl});
 
   @override
   _ArticleViewState createState() => _ArticleViewState();

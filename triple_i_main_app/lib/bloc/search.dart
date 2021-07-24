@@ -27,7 +27,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     }
 
     if (event is DeleteSearch) {
-      await this._client.delete(symbol: event.symbol);
+      await this._client.delete(symbol: event.symbol!);
       yield* _fetchSavedSearches();
     }
 
@@ -54,7 +54,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         : SearchData(data: data, listType: ListType.searchHistory);
   }
 
-  Stream<SearchState> _fetchSearchResults({String symbol}) async* {
+  Stream<SearchState> _fetchSearchResults({String? symbol}) async* {
     try {
       final data = await this._client.searchStock(symbol: symbol);
 
@@ -78,19 +78,19 @@ class FetchSearchHistory extends SearchEvent {}
 class FetchSearchResults extends SearchEvent {
   final String symbol;
 
-  FetchSearchResults({@required this.symbol});
+  FetchSearchResults({required this.symbol});
 }
 
 class SaveSearch extends SearchEvent {
-  final String symbol;
+  final String? symbol;
 
-  SaveSearch({@required this.symbol});
+  SaveSearch({required this.symbol});
 }
 
 class DeleteSearch extends SearchEvent {
-  final String symbol;
+  final String? symbol;
 
-  DeleteSearch({@required this.symbol});
+  DeleteSearch({required this.symbol});
 }
 
 @immutable
@@ -104,11 +104,11 @@ class SearchData extends SearchState {
   final List<StockSearch> data;
   final ListType listType;
 
-  SearchData({@required this.data, @required this.listType});
+  SearchData({required this.data, required this.listType});
 }
 
 class SearchResultsLoadingError extends SearchState {
   final String message;
 
-  SearchResultsLoadingError({@required this.message});
+  SearchResultsLoadingError({required this.message});
 }

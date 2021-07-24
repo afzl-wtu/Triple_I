@@ -9,7 +9,7 @@ import '../../models/search.dart';
 class SearchResultsWidget extends StatelessWidget {
   final StockSearch search;
 
-  SearchResultsWidget({@required this.search});
+  SearchResultsWidget({required this.search});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class SearchResultsWidget extends StatelessWidget {
         color: Colors.black,
       ),
       title: Text(
-        search.symbol,
+        search.symbol!,
         style: TextStyle(color: Colors.black),
       ),
       onTap: () {

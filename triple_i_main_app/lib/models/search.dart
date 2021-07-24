@@ -6,10 +6,10 @@ enum ListType {
 }
 
 class StockSearch {
-  final String symbol;
+  final String? symbol;
 
   StockSearch({
-    @required this.symbol,
+    required this.symbol,
   });
 
   static List<StockSearch> convertToList(List<dynamic> items) {

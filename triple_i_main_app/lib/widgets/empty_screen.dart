@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class EmptyScreen extends StatelessWidget {
-  final String message;
+  final String? message;
 
   EmptyScreen({this.message});
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      message,
+      message!,
       style: TextStyle(
           height: 1.5,
           fontSize: 20,

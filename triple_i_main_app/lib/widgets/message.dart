@@ -6,7 +6,7 @@ class MessageScreen extends StatelessWidget {
   final String message;
   final Widget action;
 
-  MessageScreen({@required this.message, @required this.action});
+  MessageScreen({required this.message, required this.action});
 
   @override
   Widget build(BuildContext context) {

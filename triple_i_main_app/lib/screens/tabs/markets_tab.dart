@@ -85,7 +85,7 @@ class MarketsPerformance extends StatelessWidget {
     });
   }
 
-  Widget _buildMarketMovers({MarketMoversModelData stonks, Color color}) {
+  Widget _buildMarketMovers({required MarketMoversModelData stonks, Color? color}) {
     return Padding(
       padding: const EdgeInsets.only(left: 8.0),
       child: Container(
@@ -106,11 +106,11 @@ class MarketsPerformance extends StatelessWidget {
 
 class MarketMovers extends StatelessWidget {
   final MarketActiveModel data;
-  final Color color;
+  final Color? color;
 
   MarketMovers({
-    @required this.data,
-    @required this.color,
+    required this.data,
+    required this.color,
   });
 
   @override
@@ -145,7 +145,7 @@ class MarketMovers extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           // Ticker Symbol.
-          Text(data.ticker,
+          Text(data.ticker!,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 12.5,
@@ -154,7 +154,7 @@ class MarketMovers extends StatelessWidget {
           // Change percentage.
           SizedBox(height: 5),
           Text(
-            data.changesPercentage,
+            data.changesPercentage!,
             style: TextStyle(color: Colors.white),
           ),
         ],
@@ -166,16 +166,16 @@ class MarketMovers extends StatelessWidget {
 class SectorPerformance extends StatefulWidget {
   final SectorPerformanceModel performanceData;
 
-  SectorPerformance({@required this.performanceData});
+  SectorPerformance({required this.performanceData});
 
   @override
   _SectorPerformanceState createState() => _SectorPerformanceState();
 }
 
 class _SectorPerformanceState extends State<SectorPerformance> {
-  var _value = 0.0;
-  List<SingleSectorPerformance> get _sectors {
-    List<SingleSectorPerformance> a;
+  double? _value = 0.0;
+  List<SingleSectorPerformance>? get _sectors {
+    List<SingleSectorPerformance>? a;
     if (_value == 0.0) a = widget.performanceData.realTime.sectors;
     if (_value == 1.0) a = widget.performanceData.oneDay.sectors;
     if (_value == 2.0) a = widget.performanceData.fiveDays.sectors;
@@ -219,10 +219,10 @@ class _SectorPerformanceState extends State<SectorPerformance> {
                 showLabels: true,
                 onChanged: (dynamic value) {
                   setState(() {
-                    _value = el.EasyLocalization.of(context).currentLocale ==
+                    _value = el.EasyLocalization.of(context)!.currentLocale ==
                             Locale('en')
                         ? value
-                        : 5 - value;
+                        : 5 - value as double?;
                   });
                 },
               ),
@@ -236,15 +236,15 @@ class _SectorPerformanceState extends State<SectorPerformance> {
               addAutomaticKeepAlives: false,
               padding: EdgeInsets.only(top: 10),
               physics: NeverScrollableScrollPhysics(),
-              itemCount: _sectors.length,
+              itemCount: _sectors!.length,
               itemBuilder: (BuildContext context, int index) =>
-                  _buildListTile(sectorPerformance: _sectors[index])),
+                  _buildListTile(sectorPerformance: _sectors![index])),
         ),
       ],
     );
   }
 
-  Widget _buildListTile({SingleSectorPerformance sectorPerformance}) {
+  Widget _buildListTile({required SingleSectorPerformance sectorPerformance}) {
     final changeString = sectorPerformance.change.replaceFirst(RegExp('%'), '');
     final change = double.parse(changeString);
     final width = change > 9.99 ? null : 75.5;
