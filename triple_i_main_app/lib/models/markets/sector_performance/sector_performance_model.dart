@@ -1,6 +1,3 @@
-import 'package:meta/meta.dart';
-
-// This is the main model.
 class SectorPerformanceModel {
   final SectorPerformanceDataModel oneDay;
   final SectorPerformanceDataModel fiveDays;

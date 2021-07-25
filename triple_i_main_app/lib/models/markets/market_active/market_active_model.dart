@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 import './market_active.dart';
 
 class MarketMoversModelData {

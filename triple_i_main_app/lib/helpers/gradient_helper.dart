@@ -36,9 +36,10 @@ class CssLike {
   }
 
   static Alignment _getEndAlignment(Object angleOrEndAlignment) {
-    if (angleOrEndAlignment == null) {
-      return Alignment.bottomCenter;
-    } else if (angleOrEndAlignment is num) {
+    // if (angleOrEndAlignment == null) {
+    //   return Alignment.bottomCenter;
+    //} else
+    if (angleOrEndAlignment is num) {
       final angle = angleOrEndAlignment.toDouble();
       return _degreesToAlignment(angle - 90.0);
     } else if (angleOrEndAlignment is Alignment) {

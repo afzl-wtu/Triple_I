@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
+import 'package:main/repository/k_chart/chart_translations.dart';
 import 'package:main/repository/k_chart/flutter_k_chart.dart';
 import 'package:main/widgets/backgroundGrad.dart';
 import 'package:main/widgets/loading_indicator.dart';
@@ -19,9 +19,15 @@ class TechnicalChartScreen extends StatefulWidget {
 }
 
 class _TechnicalChartScreenState extends State<TechnicalChartScreen> {
-  MainState _mainState = MainState.NONE;
+  MainState _mainState = MainState.MA;
+  ChartStyle chartStyle = ChartStyle();
+  ChartColors chartColors = ChartColors();
+  bool _hideGrid = false;
+  bool _showNowPrice = true;
+  bool isChangeUI = false;
+  bool _volHidden = false;
 
-  SecondaryState _secondaryState = SecondaryState.NONE;
+  SecondaryState _secondaryState = SecondaryState.MACD;
 
   bool isLine = false;
   bool _isLoading = true;
@@ -73,7 +79,24 @@ class _TechnicalChartScreenState extends State<TechnicalChartScreen> {
               Row(
                 children: [
                   buildDummyColumn(),
-                  Expanded(child: Container()
+                  Expanded(
+                      child: KChartWidget(
+                    widget.durationChart['${widget.currentDuration}'],
+                    chartStyle,
+                    chartColors,
+                    isLine: isLine,
+                    mainState: _mainState,
+                    volHidden: _volHidden,
+                    secondaryState: _secondaryState,
+                    fixedLength: 2,
+                    timeFormat: TimeFormat.YEAR_MONTH_DAY,
+                    translations: kChartTranslations,
+                    showNowPrice: _showNowPrice,
+                    //`isChinese` is Deprecated, Use `translations` instead.
+                    isChinese: false,
+                    hideGrid: _hideGrid,
+                    maDayList: [1, 100, 1000],
+                  )
                       // KChartWidget(
                       //   widget.durationChart['${widget.currentDuration}'],
                       //   isLine: isLine,
@@ -117,101 +140,108 @@ class _TechnicalChartScreenState extends State<TechnicalChartScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            button("Candl",
+                onPressed: () => isLine = !isLine, selected: !isLine),
+            button("MA",
+                onPressed: () => _mainState =
+                    _mainState == MainState.MA ? MainState.NONE : MainState.MA,
+                selected: _mainState == MainState.MA),
             button(
-              "Line",
-              onPressed: () => isLine = true,
-              selected: isLine,
+              "BOLL",
+              onPressed: () => _mainState = _mainState == MainState.BOLL
+                  ? MainState.NONE
+                  : MainState.BOLL,
+              selected: _mainState == MainState.BOLL,
             ),
-            button(
-              "Bars",
-              onPressed: () => isLine = false,
-              selected: !isLine,
+            button("Vol",
+                onPressed: () => _volHidden = !_volHidden,
+                selected: !_volHidden),
+            button("Grid",
+                onPressed: () => _hideGrid = !_hideGrid, selected: !_hideGrid),
+            button("Price",
+                onPressed: () => _showNowPrice = !_showNowPrice,
+                selected: _showNowPrice),
+            SizedBox(
+              height: 6,
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: 6.0,
-              ),
+            button("MACD",
+                onPressed: () => _secondaryState =
+                    _secondaryState == SecondaryState.MACD
+                        ? SecondaryState.NONE
+                        : SecondaryState.MACD,
+                selected: _secondaryState == SecondaryState.MACD),
+            button("KDJ",
+                onPressed: () => _secondaryState =
+                    _secondaryState == SecondaryState.KDJ
+                        ? SecondaryState.NONE
+                        : SecondaryState.KDJ,
+                selected: _secondaryState == SecondaryState.KDJ),
+            button("RSI",
+                onPressed: () => _secondaryState =
+                    _secondaryState == SecondaryState.RSI
+                        ? SecondaryState.NONE
+                        : SecondaryState.RSI,
+                selected: _secondaryState == SecondaryState.RSI),
+            button("WR",
+                onPressed: () => _secondaryState =
+                    _secondaryState == SecondaryState.WR
+                        ? SecondaryState.NONE
+                        : SecondaryState.WR,
+                selected: _secondaryState == SecondaryState.WR),
+            button("CCI",
+                onPressed: () => _secondaryState =
+                    _secondaryState == SecondaryState.CCI
+                        ? SecondaryState.NONE
+                        : SecondaryState.CCI,
+                selected: _secondaryState == SecondaryState.CCI),
+            SizedBox(
+              height: 6,
             ),
+            // button("Customize UI", onPressed: () {
+            //   setState(() {
+            //     this.isChangeUI = !this.isChangeUI;
+            //     if (this.isChangeUI) {
+            //       chartColors.selectBorderColor = Colors.red;
+            //       chartColors.selectFillColor = Colors.red;
+            //       chartColors.lineFillColor = Colors.red;
+            //       chartColors.kLineColor = Colors.yellow;
+            //     } else {
+            //       chartColors.selectBorderColor = Color(0xff6C7A86);
+            //       chartColors.selectFillColor = Color(0xff0D1722);
+            //       chartColors.lineFillColor = Color(0x554C86CD);
+            //       chartColors.kLineColor = Color(0xff4C86CD);
+            //     }
+            //   });
+            // }),
             button(
               "1m",
-              onPressed: () =>
-                  widget.durationController('1min', nextScreen: true),
+              onPressed: () => widget.durationController('1min'),
               selected: widget.currentDuration == '1min',
             ),
             button(
               "5m",
-              onPressed: () =>
-                  widget.durationController('5min', nextScreen: true),
+              onPressed: () => widget.durationController('5min'),
               selected: widget.currentDuration == '5min',
             ),
             button(
               "30m",
-              onPressed: () =>
-                  widget.durationController('30min', nextScreen: true),
+              onPressed: () => widget.durationController('30min'),
               selected: widget.currentDuration == '30min',
             ),
             button(
               "1h",
-              onPressed: () =>
-                  widget.durationController('1hour', nextScreen: true),
+              onPressed: () => widget.durationController('1hour'),
               selected: widget.currentDuration == '1hour',
             ),
             button(
               "1D",
-              onPressed: () =>
-                  widget.durationController('1day', nextScreen: true),
+              onPressed: () => widget.durationController('1day'),
               selected: widget.currentDuration == '1day',
             ),
             button(
-              "?",
+              "⏱️",
               onPressed: _showRangePicker,
-              selected: widget.currentDuration == '1min',
-            ),
-            Padding(padding: EdgeInsets.only(top: 6)),
-            button(
-              "MACD",
-              onPressed: () => _secondaryState = SecondaryState.MACD,
-              selected: _mainState == MainState.MA,
-            ),
-            button(
-              "KDJ",
-              onPressed: () => _secondaryState = SecondaryState.KDJ,
-              selected: _secondaryState == SecondaryState.KDJ,
-            ),
-            button(
-              "RSI",
-              onPressed: () => _secondaryState = SecondaryState.RSI,
-              selected: _secondaryState == SecondaryState.RSI,
-            ),
-            button(
-              "WR",
-              onPressed: () => _secondaryState = SecondaryState.WR,
-              selected: _secondaryState == SecondaryState.WR,
-            ),
-            button(
-              "NONE",
-              onPressed: () => _secondaryState = SecondaryState.NONE,
-              selected: _secondaryState == SecondaryState.NONE,
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: 6.0,
-              ),
-            ),
-            button(
-              "MA",
-              onPressed: () => _mainState = MainState.MA,
-              selected: _mainState == MainState.MA,
-            ),
-            button(
-              "BOLL",
-              onPressed: () => _mainState = MainState.BOLL,
-              selected: _mainState == MainState.BOLL,
-            ),
-            button(
-              "NONE",
-              onPressed: () => _mainState = MainState.NONE,
-              selected: _mainState == MainState.NONE,
+              selected: widget.currentDuration == '1day',
             ),
           ],
         ),
@@ -220,14 +250,17 @@ class _TechnicalChartScreenState extends State<TechnicalChartScreen> {
   }
 
   Future<void> _showRangePicker() async {
-    final _response = await DateRangePicker.showDatePicker(
+    final _response = await showDateRangePicker(
         context: context,
-        initialFirstDate: DateTime.now().subtract(Duration(days: 365)),
-        initialLastDate: DateTime.now(),
+        initialEntryMode: DatePickerEntryMode.input,
+        initialDateRange: DateTimeRange(
+            start: DateTime.now().subtract(Duration(days: 120)),
+            end: DateTime.now()),
         firstDate: DateTime.now().subtract(Duration(days: 3650)),
         lastDate: DateTime.now());
+    if (_response == null) return;
     widget.durationController('1day',
-        from: _response[0], to: _response[1], nextScreen: true);
+        from: _response.start, to: _response.end, nextScreen: true);
   }
 
   Widget button(String text, {VoidCallback? onPressed, bool selected = false}) {
@@ -249,7 +282,9 @@ class _TechnicalChartScreenState extends State<TechnicalChartScreen> {
         ),
         style: ButtonStyle(
             backgroundColor: MaterialStateColor.resolveWith(
-              (states) => selected ? Colors.blue : Colors.blue.withOpacity(0.6),
+              (states) => selected
+                  ? Color.fromRGBO(65, 190, 186, 1)
+                  : Color.fromRGBO(65, 190, 186, 1).withOpacity(0.6),
             ),
             foregroundColor:
                 MaterialStateColor.resolveWith((states) => Colors.black)),

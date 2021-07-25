@@ -293,6 +293,7 @@ class _KChartWidgetState extends State<KChartWidget>
               itemExtent: 14.0,
               shrinkWrap: true,
               itemBuilder: (context, index) {
+                // ignore: deprecated_member_use_from_same_package
                 final translations = widget.isChinese
                     ? kChartTranslations['zh_CN']!
                     : widget.translations.of(context);

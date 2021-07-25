@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 import './stock_profile.dart';
 import './stock_quote.dart';
 //import './stock_chart.dart';

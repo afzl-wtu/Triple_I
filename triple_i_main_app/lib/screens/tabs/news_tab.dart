@@ -160,6 +160,7 @@ class NewsCardWidget extends StatelessWidget {
   final List<SingleNewModel> news;
 
   NewsCardWidget({required this.title, required this.news})
+      // ignore: unnecessary_null_comparison
       : assert(news != null);
 
   @override

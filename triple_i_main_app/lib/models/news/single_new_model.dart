@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 class SingleNewModel {
   final String? source;
   final String? title;
@@ -42,7 +40,8 @@ class SingleNewModel {
       [bool finnhub = false]) {
     List<SingleNewModel> testList;
     finnhub == false
-        ? testList = items!.map((item) => SingleNewModel.fromJson(item)).toList()
+        ? testList =
+            items!.map((item) => SingleNewModel.fromJson(item)).toList()
         : testList =
             items!.map((item) => SingleNewModel.fromJsonFinnhub(item)).toList();
     print('PP in toList method testList: $testList');

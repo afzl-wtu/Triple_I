@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 class StockChart {
   final String? date;
   final double? open;

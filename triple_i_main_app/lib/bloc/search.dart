@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:meta/meta.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -34,9 +34,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     if (event is FetchSearchResults) {
       yield SearchLoading();
 
-      final hasConnection = await DataConnectionChecker().hasConnection;
+      final hasConnection = await Connectivity().checkConnectivity();
 
-      if (hasConnection) {
+      if (hasConnection != ConnectivityResult.none) {
         yield* _fetchSearchResults(symbol: event.symbol);
       } else {
         yield SearchResultsLoadingError(message: 'No internet connection');

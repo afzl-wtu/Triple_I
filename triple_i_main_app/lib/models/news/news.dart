@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 import './single_new_model.dart';
 
 class NewsDataModel {

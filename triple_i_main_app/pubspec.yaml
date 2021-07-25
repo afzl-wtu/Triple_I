@@ -27,8 +27,7 @@ dependencies:
   bottom_navy_bar: ^6.0.0
   cached_network_image: ^3.0.0
   cloud_firestore: ^1.0.3
-  data_connection_checker: ^0.3.4
-  date_range_picker: ^1.0.7
+  connectivity: ^3.0.6
   dio: ^4.0.0
   easy_localization: ^3.0.0
   firebase_core: ^1.0.2

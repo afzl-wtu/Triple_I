@@ -1,7 +1,4 @@
-import 'package:meta/meta.dart';
-
 class StorageModel {
-  
   final String? symbol;
   final String? companyName;
 
@@ -11,11 +8,9 @@ class StorageModel {
   });
 
   static List<StorageModel> convertToList(List<dynamic> items) {
-    return items
-    .map((item) => StorageModel.fromJson(item))
-    .toList();
+    return items.map((item) => StorageModel.fromJson(item)).toList();
   }
-  
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
 

@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:main/repository/k_chart/chart_translations.dart';
 import 'package:main/repository/k_chart/flutter_k_chart.dart';
 //import 'package:main/packages/chart_translations.dart';
 //import 'package:main/packages/flutter_k_chart.dart';
 import 'package:main/repository/profile/client.dart';
 import 'package:main/screens/profile_tabs/technical_chart_screen.dart';
 import 'package:main/widgets/loading_indicator.dart';
-import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
-
-import '../../../helpers/color_helper.dart';
-import '../../../helpers/text_helper.dart';
 import '../../../models/profile/stock_profile.dart';
 import '../../../models/profile/stock_quote.dart';
 
@@ -156,24 +153,23 @@ class _ChartTabState extends State<ChartTab> {
                 return LoadingIndicatorWidget();
               else {
                 if (!_isMovingToNextScreen) _jumper();
-                return Container()
-                    // KChartWidget(
-                    //   _durationCharts['$_currentDuration'],
-                    //   chartStyle,
-                    //   chartColors,
-                    //   isLine: isLine,
-                    //   mainState: _mainState,
-                    //   volHidden: _volHidden,
-                    //   secondaryState: _secondaryState,
-                    //   fixedLength: 2,
-                    //   timeFormat: TimeFormat.YEAR_MONTH_DAY,
-                    //   translations: kChartTranslations,
-                    //   showNowPrice: _showNowPrice,
-                    //   //`isChinese` is Deprecated, Use `translations` instead.
-                    //   isChinese: false,
-                    //   hideGrid: _hideGrid,
-                    //   maDayList: [1, 100, 1000],
-                    // )
+                return KChartWidget(
+                  _durationCharts['$_currentDuration'],
+                  chartStyle,
+                  chartColors,
+                  isLine: isLine,
+                  mainState: _mainState,
+                  volHidden: _volHidden,
+                  secondaryState: _secondaryState,
+                  fixedLength: 2,
+                  timeFormat: TimeFormat.YEAR_MONTH_DAY,
+                  translations: kChartTranslations,
+                  showNowPrice: _showNowPrice,
+                  //`isChinese` is Deprecated, Use `translations` instead.
+                  isChinese: false,
+                  hideGrid: _hideGrid,
+                  maDayList: [1, 100, 1000],
+                )
                     // KChartWidget(
                     //   _durationCharts['$_currentDuration'],
                     //   isLine: isLine,
@@ -203,96 +199,70 @@ class _ChartTabState extends State<ChartTab> {
 
   List<Widget> buildButtons() {
     return [
-      button(
-        "Line",
-        onPressed: () => isLine = true,
-        selected: isLine,
-      ),
-      button(
-        "Bars",
-        onPressed: () => isLine = false,
-        selected: !isLine,
-      ),
-      button(
-        "MACD",
-        onPressed: () => _secondaryState = SecondaryState.MACD,
-        selected: _mainState == MainState.MA,
-      ),
-      button(
-        "KDJ",
-        onPressed: () => _secondaryState = SecondaryState.KDJ,
-        selected: _secondaryState == SecondaryState.KDJ,
-      ),
-      button(
-        "RSI",
-        onPressed: () => _secondaryState = SecondaryState.RSI,
-        selected: _secondaryState == SecondaryState.RSI,
-      ),
-      button(
-        "WR",
-        onPressed: () => _secondaryState = SecondaryState.WR,
-        selected: _secondaryState == SecondaryState.WR,
-      ),
-      button(
-        "NONE",
-        onPressed: () => _secondaryState = SecondaryState.NONE,
-        selected: _secondaryState == SecondaryState.NONE,
-      ),
-      button(
-        "MA",
-        onPressed: () => _mainState = MainState.MA,
-        selected: _mainState == MainState.MA,
-      ),
+      button("Candles", onPressed: () => isLine = !isLine, selected: !isLine),
+      button("MA",
+          onPressed: () => _mainState =
+              _mainState == MainState.MA ? MainState.NONE : MainState.MA,
+          selected: _mainState == MainState.MA),
       button(
         "BOLL",
-        onPressed: () => _mainState = MainState.BOLL,
+        onPressed: () => _mainState =
+            _mainState == MainState.BOLL ? MainState.NONE : MainState.BOLL,
         selected: _mainState == MainState.BOLL,
       ),
-      button(
-        "NONE",
-        onPressed: () => _mainState = MainState.NONE,
-        selected: _mainState == MainState.NONE,
-      ),
-      button("Time Mode", onPressed: () => isLine = true),
-      button("K Line Mode", onPressed: () => isLine = false),
-      button("Line:MA", onPressed: () => _mainState = MainState.MA),
-      button("Line:BOLL", onPressed: () => _mainState = MainState.BOLL),
-      button("Hide Line", onPressed: () => _mainState = MainState.NONE),
-      button("Secondary Chart:MACD",
-          onPressed: () => _secondaryState = SecondaryState.MACD),
-      button("Secondary Chart:KDJ",
-          onPressed: () => _secondaryState = SecondaryState.KDJ),
-      button("Secondary Chart:RSI",
-          onPressed: () => _secondaryState = SecondaryState.RSI),
-      button("Secondary Chart:WR",
-          onPressed: () => _secondaryState = SecondaryState.WR),
-      button("Secondary Chart:CCI",
-          onPressed: () => _secondaryState = SecondaryState.CCI),
-      button("Secondary Chart:Hide",
-          onPressed: () => _secondaryState = SecondaryState.NONE),
-      button(_volHidden ? "Show Vol" : "Hide Vol",
-          onPressed: () => _volHidden = !_volHidden),
-      button("Change Language", onPressed: () => isChinese = !isChinese),
-      button(_hideGrid ? "Show Grid" : "Hide Grid",
-          onPressed: () => _hideGrid = !_hideGrid),
-      button(_showNowPrice ? "Hide Now Price" : "Show Now Price",
-          onPressed: () => _showNowPrice = !_showNowPrice),
-      button("Customize UI", onPressed: () {
-        setState(() {
-          this.isChangeUI = !this.isChangeUI;
-          if (this.isChangeUI) {
-            chartColors.selectBorderColor = Colors.red;
-            chartColors.selectFillColor = Colors.red;
-            chartColors.lineFillColor = Colors.red;
-            chartColors.kLineColor = Colors.yellow;
-          } else {
-            chartColors.selectBorderColor = Color(0xff6C7A86);
-            chartColors.selectFillColor = Color(0xff0D1722);
-            chartColors.lineFillColor = Color(0x554C86CD);
-            chartColors.kLineColor = Color(0xff4C86CD);
-          }
-        });
-      }),
+      button("Vol",
+          onPressed: () => _volHidden = !_volHidden, selected: !_volHidden),
+      button("Grid",
+          onPressed: () => _hideGrid = !_hideGrid, selected: !_hideGrid),
+      button("Price",
+          onPressed: () => _showNowPrice = !_showNowPrice,
+          selected: _showNowPrice),
+      button("MACD",
+          onPressed: () => _secondaryState =
+              _secondaryState == SecondaryState.MACD
+                  ? SecondaryState.NONE
+                  : SecondaryState.MACD,
+          selected: _secondaryState == SecondaryState.MACD),
+      button("KDJ",
+          onPressed: () => _secondaryState =
+              _secondaryState == SecondaryState.KDJ
+                  ? SecondaryState.NONE
+                  : SecondaryState.KDJ,
+          selected: _secondaryState == SecondaryState.KDJ),
+      button("RSI",
+          onPressed: () => _secondaryState =
+              _secondaryState == SecondaryState.RSI
+                  ? SecondaryState.NONE
+                  : SecondaryState.RSI,
+          selected: _secondaryState == SecondaryState.RSI),
+      button("WR",
+          onPressed: () => _secondaryState =
+              _secondaryState == SecondaryState.WR
+                  ? SecondaryState.NONE
+                  : SecondaryState.WR,
+          selected: _secondaryState == SecondaryState.WR),
+      button("CCI",
+          onPressed: () => _secondaryState =
+              _secondaryState == SecondaryState.CCI
+                  ? SecondaryState.NONE
+                  : SecondaryState.CCI,
+          selected: _secondaryState == SecondaryState.CCI),
+      // button("Customize UI", onPressed: () {
+      //   setState(() {
+      //     this.isChangeUI = !this.isChangeUI;
+      //     if (this.isChangeUI) {
+      //       chartColors.selectBorderColor = Colors.red;
+      //       chartColors.selectFillColor = Colors.red;
+      //       chartColors.lineFillColor = Colors.red;
+      //       chartColors.kLineColor = Colors.yellow;
+      //     } else {
+      //       chartColors.selectBorderColor = Color(0xff6C7A86);
+      //       chartColors.selectFillColor = Color(0xff0D1722);
+      //       chartColors.lineFillColor = Color(0x554C86CD);
+      //       chartColors.kLineColor = Color(0xff4C86CD);
+      //     }
+      //   });
+      // }),
       button(
         "1m",
         onPressed: () => _durationController('1min'),
@@ -319,7 +289,7 @@ class _ChartTabState extends State<ChartTab> {
         selected: _currentDuration == '1day',
       ),
       button(
-        "?",
+        "⏱️",
         onPressed: _showRangePicker,
         selected: _currentDuration == '1day',
       ),
@@ -358,12 +328,17 @@ class _ChartTabState extends State<ChartTab> {
   }
 
   Future<void> _showRangePicker() async {
-    final _response = await DateRangePicker.showDatePicker(
+    final _response = await showDateRangePicker(
+        initialEntryMode: DatePickerEntryMode.input,
         context: context,
-        initialFirstDate: DateTime.now().subtract(Duration(days: 365)),
-        initialLastDate: DateTime.now(),
+        initialDateRange: DateTimeRange(
+            start: DateTime.now().subtract(
+              Duration(days: 120),
+            ),
+            end: DateTime.now()),
         firstDate: DateTime.now().subtract(Duration(days: 3650)),
         lastDate: DateTime.now());
-    _durationController('1day', from: _response[0], to: _response[1]);
+    if (_response == null) return;
+    _durationController('1day', from: _response.start, to: _response.end);
   }
 }
