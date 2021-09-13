@@ -4,6 +4,10 @@ import '../entity/candle_entity.dart';
 import '../k_chart_widget.dart' show MainState;
 import 'base_chart_renderer.dart';
 
+double? afzalMax;
+double? afzalScale;
+double? afzalContentRec;
+
 class MainRenderer extends BaseChartRenderer<CandleEntity> {
   late double mCandleWidth;
   late double mCandleLineWidth;
@@ -107,6 +111,8 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
   void drawChart(CandleEntity lastPoint, CandleEntity curPoint, double lastX,
       double curX, Size size, Canvas canvas) {
     if (isLine != true) {
+      // print(
+      //   'PP: main_renderer: drawCandle: curPointUpDnDifference: ${curPoint.up! - curPoint.dn!}');
       drawCandle(curPoint, canvas, curX);
     }
     if (isLine == true) {
@@ -198,7 +204,9 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
     }
   }
 
+  int candle = 0;
   void drawCandle(CandleEntity curPoint, Canvas canvas, double curX) {
+    candle++;
     var high = getY(curPoint.high);
     var low = getY(curPoint.low);
     var open = getY(curPoint.open);
@@ -240,10 +248,7 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
       if (i == 0) {
         tp.paint(canvas, Offset(0, topPadding));
       } else {
-        tp.paint(
-            canvas,
-            Offset(0,
-                rowSpace * i - tp.height + topPadding));
+        tp.paint(canvas, Offset(0, rowSpace * i - tp.height + topPadding));
       }
     }
   }
@@ -265,6 +270,17 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
 
   @override
   double getY(double y) {
-    return (maxValue - y) * scaleY + _contentRect.top;
+    afzalMax = maxValue;
+    afzalScale = scaleY;
+
+    afzalContentRec = _contentRect.top;
+    var a = (maxValue - y) * scaleY + _contentRect.top;
+    // print(
+    //     'PP: main_renderer: val of y: $y, maxvalue:$maxValue, _contentRect.top: ${_contentRect.top}, return: $a');
+    return a;
   }
 }
+
+// double afzlGetY(double y) {
+//   return (afzalMax! - y) * afzalScale! + afzalContentRec!;
+// }

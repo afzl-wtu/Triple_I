@@ -111,9 +111,7 @@ abstract class BaseChartPainter extends CustomPainter {
   void drawBg(Canvas canvas, Size size);
 
   //画网格
-  void drawGrid(canvas);
-
-  //画图表
+  void drawGrid(canvas); //画图表
   void drawChart(Canvas canvas, Size size);
 
   //画右边值
@@ -136,6 +134,7 @@ abstract class BaseChartPainter extends CustomPainter {
 
   void initRect(Size size) {
     double volHeight = volHidden != true ? mDisplayHeight * 0.2 : 0;
+
     double secondaryHeight =
         secondaryState != SecondaryState.NONE ? mDisplayHeight * 0.2 : 0;
 
@@ -149,6 +148,8 @@ abstract class BaseChartPainter extends CustomPainter {
       mVolRect = Rect.fromLTRB(0, mMainRect.bottom + mChildPadding, mWidth,
           mMainRect.bottom + volHeight);
     }
+    // print(
+    //     'PP: in base_chart_painter: mMainRect: ${mMainRect.height}, mainHeight: ${mainHeight}');
 
     //secondaryState == SecondaryState.NONE隐藏副视图
     if (secondaryState != SecondaryState.NONE) {

@@ -84,6 +84,7 @@ class _TechnicalChartScreenState extends State<TechnicalChartScreen> {
                     widget.durationChart['${widget.currentDuration}'],
                     chartStyle,
                     chartColors,
+                    isTrendLine: false,
                     isLine: isLine,
                     mainState: _mainState,
                     volHidden: _volHidden,

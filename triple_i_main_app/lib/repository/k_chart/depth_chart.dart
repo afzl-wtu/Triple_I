@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import 'package:main/repository/k_chart/flutter_k_chart.dart';
+import './flutter_k_chart.dart';
 
 class DepthChart extends StatefulWidget {
   final List<DepthEntity> bids, asks;

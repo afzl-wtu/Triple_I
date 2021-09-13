@@ -33,6 +33,8 @@ abstract class BaseChartRenderer<T> {
     }
     scaleY = chartRect.height / (maxValue - minValue);
     gridPaint.color = gridColor;
+    // print(
+    //     'PP in base_chart_renderer: val scaleY: $scaleY , chartRectHeight: ${chartRect.bottom}');
     // print("maxValue=====" + maxValue.toString() + "====minValue===" + minValue.toString() + "==scaleY==" + scaleY.toString());
   }
 

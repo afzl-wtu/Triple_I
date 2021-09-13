@@ -42,17 +42,14 @@ class _ChartTabState extends State<ChartTab> {
   bool _hideGrid = false;
   bool _showNowPrice = true;
   bool isChangeUI = false;
+  var _isTrendLine = false;
 
   ChartStyle chartStyle = ChartStyle();
   ChartColors chartColors = ChartColors();
 
   @override
   void initState() {
-    print('PP: in chart_tab initstate');
     SystemChrome.setPreferredOrientations([]);
-
-    print(
-        'PP: in chart_tab initstate but after calling _durationController(null)');
     super.initState();
   }
 
@@ -61,13 +58,9 @@ class _ChartTabState extends State<ChartTab> {
 
     final datas = await ProfileClient.getApiChart(
         _currentDuration, widget.stockQuote.symbol, _from, _to);
-    print(
-        'PP: in chart_tab _getdata: value of datas before DataUtil.calculate= $datas');
 
     _durationCharts.update(_currentDuration, (value) => datas,
         ifAbsent: () => datas);
-
-    print('PP: in _getData(last line) after data loaded');
   }
 
   bool _isNextScreen = false;
@@ -78,12 +71,9 @@ class _ChartTabState extends State<ChartTab> {
     if (duration != null) _currentDuration = duration;
     _from = from;
     _to = to;
-    print('PP: in _durationController before await _getData');
     await _getData();
 
     DataUtil.calculate(_durationCharts['$_currentDuration']!);
-    print(
-        'PP: in _durationController before setState and after await _getData');
     if (_isNextScreen)
       _jumpToScreen();
     else
@@ -105,39 +95,26 @@ class _ChartTabState extends State<ChartTab> {
   }
 
   Future<void> _jumper() async {
-    print('PP: in  _jumper() start');
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
-      print(
-          'PP: in  _jumper() if condition of OrientationLandscape if true and before Futur.delay');
-
       _isMovingToNextScreen = true;
       await Future.delayed(Duration(milliseconds: 0));
 
-      print('PP: in  _jumper() if true, after future.delay');
-
       await _jumpToScreen();
     } else {
-      print('PP: in  _jumper() else part before setting _isloading=false');
-
       _isLoading = false;
     }
   }
 
   @override
   void dispose() {
-    print('PP: in dispose method');
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    print('PP: in build method setting _isLoading true');
     //_isLoading = true;
-    //
 
-    print(
-        'PP: in _builder method after calling _jumper(), value of _isloading=$_isLoading');
     return ListView(
       physics: BouncingScrollPhysics(),
       children: <Widget>[
@@ -159,6 +136,7 @@ class _ChartTabState extends State<ChartTab> {
                   chartColors,
                   isLine: isLine,
                   mainState: _mainState,
+                  isTrendLine: _isTrendLine,
                   volHidden: _volHidden,
                   secondaryState: _secondaryState,
                   fixedLength: 2,
@@ -293,6 +271,10 @@ class _ChartTabState extends State<ChartTab> {
         onPressed: _showRangePicker,
         selected: _currentDuration == '1day',
       ),
+      button('Trend', onPressed: () {
+        _isTrendLine = !_isTrendLine;
+        setState(() {});
+      }, selected: _isTrendLine),
     ];
   }
 
