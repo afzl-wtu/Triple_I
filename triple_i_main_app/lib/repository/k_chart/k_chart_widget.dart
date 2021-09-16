@@ -110,7 +110,7 @@ class _KChartWidgetState extends State<KChartWidget>
   @override
   void initState() {
     super.initState();
-    mInfoWindowStream = StreamController<InfoWindowEntity?>();
+    mInfoWindowStream = StreamController<InfoWindowEntity?>.broadcast();
   }
 
   @override

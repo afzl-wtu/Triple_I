@@ -31,6 +31,7 @@ class _TechnicalChartScreenState extends State<TechnicalChartScreen> {
 
   bool isLine = false;
   bool _isLoading = true;
+  var _isTrendLine = false;
 
   @override
   void initState() {
@@ -84,7 +85,7 @@ class _TechnicalChartScreenState extends State<TechnicalChartScreen> {
                     widget.durationChart['${widget.currentDuration}'],
                     chartStyle,
                     chartColors,
-                    isTrendLine: false,
+                    isTrendLine: _isTrendLine,
                     isLine: isLine,
                     mainState: _mainState,
                     volHidden: _volHidden,
@@ -244,6 +245,11 @@ class _TechnicalChartScreenState extends State<TechnicalChartScreen> {
               onPressed: _showRangePicker,
               selected: widget.currentDuration == '1day',
             ),
+            SizedBox(height: 6),
+            button('Draw', onPressed: () {
+              _isTrendLine = !_isTrendLine;
+              setState(() {});
+            }, selected: _isTrendLine),
           ],
         ),
       ),

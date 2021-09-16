@@ -271,7 +271,7 @@ class _ChartTabState extends State<ChartTab> {
         onPressed: _showRangePicker,
         selected: _currentDuration == '1day',
       ),
-      button('Trend', onPressed: () {
+      button('Draw', onPressed: () {
         _isTrendLine = !_isTrendLine;
         setState(() {});
       }, selected: _isTrendLine),
