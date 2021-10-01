@@ -20,7 +20,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeState> _loadContent() async* {
     var indexes;
     try {
-      print('In try Block of _loadContent;');
       indexes = await _repository.fetchIndexes();
       yield HomeLoaded(indexes: indexes);
     } catch (e, _) {

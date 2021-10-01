@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import './chart_translations.dart';
 import './extension/map_ext.dart';
 import 'entity/info_window_entity.dart';
-//import './flutter_k_chart.dart';
 
 enum MainState { MA, BOLL, NONE }
 enum SecondaryState { MACD, KDJ, RSI, WR, CCI, NONE }
@@ -110,7 +109,7 @@ class _KChartWidgetState extends State<KChartWidget>
   @override
   void initState() {
     super.initState();
-    mInfoWindowStream = StreamController<InfoWindowEntity?>.broadcast();
+    mInfoWindowStream = StreamController<InfoWindowEntity?>();
   }
 
   @override
@@ -179,12 +178,10 @@ class _KChartWidgetState extends State<KChartWidget>
         }
       },
       onHorizontalDragDown: (details) {
-        print('PP: onHorizontalDragDown k_chart_widget, details: $details');
         _stopAnimation();
         _onDragChanged(true);
       },
       onHorizontalDragUpdate: (details) {
-        //print('PP: onHorizontalDragUpdate k_chart_widget, details: $details');
         if (isScale || isLongPress) return;
         mScrollX = (details.primaryDelta! / mScaleX + mScrollX)
             .clamp(0.0, ChartPainter.maxScrollX)
@@ -192,32 +189,25 @@ class _KChartWidgetState extends State<KChartWidget>
         notifyChanged();
       },
       onHorizontalDragEnd: (DragEndDetails details) {
-        print('PP: onHorizontalDragEnd k_chart_widget, details: $details');
         var velocity = details.velocity.pixelsPerSecond.dx;
         _onFling(velocity);
       },
       onHorizontalDragCancel: () {
-        print('PP: onHorizontalDragCancel k_chart_widget');
         _onDragChanged(false);
       },
       onScaleStart: (_) {
-        print('PP: onScaleStart k_chart_widget');
         isScale = true;
       },
       onScaleUpdate: (details) {
-        print('PP: onScaleUpdatet k_chart_widget,details:$details');
         if (isDrag || isLongPress) return;
         mScaleX = (_lastScale * details.scale).clamp(0.5, 2.2);
         notifyChanged();
       },
       onScaleEnd: (_) {
-        print('PP: onScaleEnd k_chart_widget');
         isScale = false;
         _lastScale = mScaleX;
       },
       onLongPressStart: (details) {
-        print(
-            'PP: onLongPress Start k_chart_widget, globalxposition:${details.globalPosition.dx}, localXpostion: ${details.localPosition.dx}');
         isLongPress = true;
         if ((mSelectX != details.globalPosition.dx ||
                 mSelectY != details.globalPosition.dy) &&
@@ -238,9 +228,6 @@ class _KChartWidgetState extends State<KChartWidget>
         }
       },
       onLongPressMoveUpdate: (details) {
-        print(
-            'PP: onLongPressMoveUpdate Start k_chart_widget, details:X: ${details.globalPosition.dx}, distance: ${details.globalPosition.distance}');
-
         if ((mSelectX != details.globalPosition.dx ||
                 mSelectY != details.globalPosition.dy) &&
             !widget.isTrendLine) {
@@ -260,7 +247,6 @@ class _KChartWidgetState extends State<KChartWidget>
         }
       },
       onLongPressEnd: (details) {
-        print('PP: onLongPressEnd k_chart_widget, details:$details');
         isLongPress = false;
         enableCordRecord = true;
         mInfoWindowStream?.sink.add(null);

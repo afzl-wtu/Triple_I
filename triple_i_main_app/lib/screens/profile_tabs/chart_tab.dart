@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:main/bloc/chart.dart';
+import 'package:main/models/chart.dart';
 import 'package:main/repository/k_chart/chart_translations.dart';
 import 'package:main/repository/k_chart/flutter_k_chart.dart';
-//import 'package:main/packages/chart_translations.dart';
-//import 'package:main/packages/flutter_k_chart.dart';
-import 'package:main/repository/profile/client.dart';
-import 'package:main/screens/profile_tabs/technical_chart_screen.dart';
 import 'package:main/widgets/loading_indicator.dart';
 import '../../../models/profile/stock_profile.dart';
 import '../../../models/profile/stock_quote.dart';
@@ -14,13 +13,11 @@ class ChartTab extends StatefulWidget {
   final Color color;
   final StockQuote stockQuote;
   final StockProfile? stockProfile;
-  //final List<StockChart> stockChart;
 
   ChartTab({
     required this.color,
     required this.stockProfile,
     required this.stockQuote,
-    // @required this.stockChart,
   });
 
   @override
@@ -28,12 +25,8 @@ class ChartTab extends StatefulWidget {
 }
 
 class _ChartTabState extends State<ChartTab> {
-  bool? _isLoading;
-  Map<String, List<KLineEntity>> _durationCharts = {};
   String _currentDuration = '1day';
-  DateTime? _from;
-  DateTime? _to;
-  bool _isMovingToNextScreen = false;
+
   MainState _mainState = MainState.MA;
   bool _volHidden = false;
   SecondaryState _secondaryState = SecondaryState.MACD;
@@ -43,95 +36,54 @@ class _ChartTabState extends State<ChartTab> {
   bool _showNowPrice = true;
   bool isChangeUI = false;
   var _isTrendLine = false;
-
   ChartStyle chartStyle = ChartStyle();
   ChartColors chartColors = ChartColors();
 
-  @override
-  void initState() {
-    SystemChrome.setPreferredOrientations([]);
-    super.initState();
-  }
-
-  Future<void> _getData() async {
-    if (_durationCharts.containsKey(_currentDuration) && _from == null) return;
-
-    final datas = await ProfileClient.getApiChart(
-        _currentDuration, widget.stockQuote.symbol, _from, _to);
-
-    _durationCharts.update(_currentDuration, (value) => datas,
-        ifAbsent: () => datas);
-  }
-
-  bool _isNextScreen = false;
-  Future<void> _durationController(String? duration,
-      {DateTime? from, DateTime? to, bool nextScreen = false}) async {
-    if (nextScreen) _isMovingToNextScreen = false;
-    _isNextScreen = nextScreen;
-    if (duration != null) _currentDuration = duration;
-    _from = from;
-    _to = to;
-    await _getData();
-
-    DataUtil.calculate(_durationCharts['$_currentDuration']!);
-    if (_isNextScreen)
-      _jumpToScreen();
-    else
-      setState(() {});
-  }
-
-  Future<void> _jumpToScreen() async {
-    await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => TechnicalChartScreen(
-          _durationCharts,
-          _durationController,
-          _currentDuration,
-        ),
+  void _fetchChartData(String s, {DateTime? from, DateTime? to}) {
+    _currentDuration = s;
+    BlocProvider.of<ChartBloc>(context).add(
+      FetchChartData(
+        symbol: widget.stockQuote.symbol!,
+        duration: DurationModel(_currentDuration, FromTo(from, to)),
       ),
     );
-    _isMovingToNextScreen = false;
-    _isNextScreen = false;
+    print('');
   }
 
-  Future<void> _jumper() async {
-    if (MediaQuery.of(context).orientation == Orientation.landscape) {
-      _isMovingToNextScreen = true;
-      await Future.delayed(Duration(milliseconds: 0));
-
-      await _jumpToScreen();
-    } else {
-      _isLoading = false;
-    }
-  }
-
+  // @override
+  // void dispose() {
+  //   BlocProvider.of<ChartBloc>(context).add(ResetChart());
+  //   super.dispose();
+  // }
   @override
-  void dispose() {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    super.dispose();
+  void initState() {
+    BlocProvider.of<ChartBloc>(context).add(ResetChart());
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    //_isLoading = true;
-
     return ListView(
       physics: BouncingScrollPhysics(),
       children: <Widget>[
         SizedBox(
           height: MediaQuery.of(context).size.height / 1.8,
           width: double.infinity,
-          child: FutureBuilder(
-            future: (_durationCharts['$_currentDuration'] != null)
-                ? null
-                : _durationController(null),
-            builder: (_, future) {
-              if (future.connectionState == ConnectionState.waiting)
+          child: BlocBuilder<ChartBloc, ChartState>(
+            builder: (_, state) {
+              if (state is ChartInitial) {
+                BlocProvider.of<ChartBloc>(context).add(
+                  FetchChartData(
+                    symbol: widget.stockQuote.symbol!,
+                    duration: DurationModel(_currentDuration, FromTo()),
+                  ),
+                );
                 return LoadingIndicatorWidget();
-              else {
-                if (!_isMovingToNextScreen) _jumper();
+              } else if (state is ChartLoading)
+                return CupertinoActivityIndicator();
+              else if (state is ChartLoaded) {
                 return KChartWidget(
-                  _durationCharts['$_currentDuration'],
+                  state.datas,
                   chartStyle,
                   chartColors,
                   isLine: isLine,
@@ -147,23 +99,12 @@ class _ChartTabState extends State<ChartTab> {
                   isChinese: false,
                   hideGrid: _hideGrid,
                   maDayList: [1, 100, 1000],
-                )
-                    // KChartWidget(
-                    //   _durationCharts['$_currentDuration'],
-                    //   isLine: isLine,
-                    //   mainState: _mainState,
-                    //   secondaryState: _secondaryState,
-                    //   fixedLength: 1,
-                    //   timeFormat: TimeFormat.YEAR_MONTH_DAY,
-                    //   isChinese: false,
-                    //   bgColor: [
-                    //     Color(0xFF121128),
-                    //     Color(0xFF121128),
-                    //     Color(0xFF121128)
-                    //   ],
-                    // )
-                    ;
-              }
+                );
+              } else //if (state is ChartError)
+                return Center(
+                    child: Wrap(
+                  children: [Text((state as ChartError).error)],
+                ));
             },
           ),
         ),
@@ -225,45 +166,29 @@ class _ChartTabState extends State<ChartTab> {
                   ? SecondaryState.NONE
                   : SecondaryState.CCI,
           selected: _secondaryState == SecondaryState.CCI),
-      // button("Customize UI", onPressed: () {
-      //   setState(() {
-      //     this.isChangeUI = !this.isChangeUI;
-      //     if (this.isChangeUI) {
-      //       chartColors.selectBorderColor = Colors.red;
-      //       chartColors.selectFillColor = Colors.red;
-      //       chartColors.lineFillColor = Colors.red;
-      //       chartColors.kLineColor = Colors.yellow;
-      //     } else {
-      //       chartColors.selectBorderColor = Color(0xff6C7A86);
-      //       chartColors.selectFillColor = Color(0xff0D1722);
-      //       chartColors.lineFillColor = Color(0x554C86CD);
-      //       chartColors.kLineColor = Color(0xff4C86CD);
-      //     }
-      //   });
-      // }),
       button(
         "1m",
-        onPressed: () => _durationController('1min'),
+        onPressed: () => _fetchChartData('1min'),
         selected: _currentDuration == '1min',
       ),
       button(
         "5m",
-        onPressed: () => _durationController('5min'),
+        onPressed: () => _fetchChartData('5min'),
         selected: _currentDuration == '5min',
       ),
       button(
         "30m",
-        onPressed: () => _durationController('30min'),
+        onPressed: () => _fetchChartData('30min'),
         selected: _currentDuration == '30min',
       ),
       button(
         "1h",
-        onPressed: () => _durationController('1hour'),
+        onPressed: () => _fetchChartData('1hour'),
         selected: _currentDuration == '1hour',
       ),
       button(
         "1D",
-        onPressed: () => _durationController('1day'),
+        onPressed: () => _fetchChartData('1day'),
         selected: _currentDuration == '1day',
       ),
       button(
@@ -271,10 +196,11 @@ class _ChartTabState extends State<ChartTab> {
         onPressed: _showRangePicker,
         selected: _currentDuration == '1day',
       ),
-      button('Draw', onPressed: () {
-        _isTrendLine = !_isTrendLine;
-        setState(() {});
-      }, selected: _isTrendLine),
+      button(
+        'Draw',
+        onPressed: () => _isTrendLine = !_isTrendLine,
+        selected: _isTrendLine,
+      ),
     ];
   }
 
@@ -321,6 +247,7 @@ class _ChartTabState extends State<ChartTab> {
         firstDate: DateTime.now().subtract(Duration(days: 3650)),
         lastDate: DateTime.now());
     if (_response == null) return;
-    _durationController('1day', from: _response.start, to: _response.end);
+    _fetchChartData('1day', from: _response.start, to: _response.end);
+    setState(() {});
   }
 }
