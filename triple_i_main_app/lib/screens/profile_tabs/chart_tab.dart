@@ -47,14 +47,8 @@ class _ChartTabState extends State<ChartTab> {
         duration: DurationModel(_currentDuration, FromTo(from, to)),
       ),
     );
-    print('');
   }
 
-  // @override
-  // void dispose() {
-  //   BlocProvider.of<ChartBloc>(context).add(ResetChart());
-  //   super.dispose();
-  // }
   @override
   void initState() {
     BlocProvider.of<ChartBloc>(context).add(ResetChart());
@@ -244,7 +238,7 @@ class _ChartTabState extends State<ChartTab> {
               Duration(days: 120),
             ),
             end: DateTime.now()),
-        firstDate: DateTime.now().subtract(Duration(days: 3650)),
+        firstDate: DateTime.now().subtract(Duration(days: 50)),
         lastDate: DateTime.now());
     if (_response == null) return;
     _fetchChartData('1day', from: _response.start, to: _response.end);
