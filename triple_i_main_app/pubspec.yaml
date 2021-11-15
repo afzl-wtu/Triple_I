@@ -26,12 +26,12 @@ dependencies:
   bloc: ^7.0.0
   bottom_navy_bar: ^6.0.0
   cached_network_image: ^3.0.0
-  cloud_firestore: ^1.0.3
+  cloud_firestore: ^3.1.0
   connectivity: ^3.0.6
   dio: ^4.0.0
   easy_localization: ^3.0.0
-  firebase_core: ^1.0.2
-  firebase_storage: ^8.0.1
+  firebase_core: ^1.10.0
+  firebase_storage: ^10.1.0
   flutter_bloc: ^7.0.0
   flutter_offline: ^2.0.0
   flutter_slider_drawer: ^2.0.0
