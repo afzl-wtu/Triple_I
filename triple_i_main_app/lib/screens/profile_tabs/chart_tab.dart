@@ -19,6 +19,7 @@ class ChartTab extends StatelessWidget {
   });
   Future<void> _jumper(BuildContext ctx) async {
     if (MediaQuery.of(ctx).orientation == Orientation.landscape) {
+      await Future.delayed(Duration(seconds: 1));
       Navigator.of(ctx).push(MaterialPageRoute(
           builder: (_) => FullChartScreen(stockQuote.symbol!)));
     }

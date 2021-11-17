@@ -85,12 +85,14 @@ class _ProfileScreenState extends State<ProfileScreen2>
             DeviceOrientation.landscapeLeft,
             DeviceOrientation.landscapeRight
           ]);
+          print('PP: In Case 1');
           break;
         default:
           SystemChrome.setPreferredOrientations([
             DeviceOrientation.portraitUp,
             DeviceOrientation.portraitDown,
           ]);
+          print('PP: Case Default');
           break;
       }
     });

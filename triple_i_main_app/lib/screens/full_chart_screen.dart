@@ -12,6 +12,7 @@ class FullChartScreen extends StatelessWidget {
   Future<void> _jumper(BuildContext context) async {
     final _orientation = MediaQuery.of(context).orientation;
     if (_orientation == Orientation.portrait) {
+      await Future.delayed(Duration(seconds: 1));
       Navigator.pop(context);
       SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     } else {
