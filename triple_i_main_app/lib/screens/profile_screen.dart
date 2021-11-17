@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:main/bloc/profile.dart';
 import 'package:main/helpers/color_helper.dart';
@@ -75,7 +76,36 @@ class _ProfileScreenState extends State<ProfileScreen2>
   @override
   void initState() {
     _tabController = TabController(length: 4, vsync: this);
+    _tabController!.addListener(() {
+      switch (_tabController!.index) {
+        case (1):
+          SystemChrome.setPreferredOrientations([
+            DeviceOrientation.portraitUp,
+            DeviceOrientation.portraitDown,
+            DeviceOrientation.landscapeLeft,
+            DeviceOrientation.landscapeRight
+          ]);
+          break;
+        default:
+          SystemChrome.setPreferredOrientations([
+            DeviceOrientation.portraitUp,
+            DeviceOrientation.portraitDown,
+          ]);
+          break;
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController!.removeListener(() {});
+    _tabController!.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.dispose();
   }
 
   @override
@@ -116,20 +146,23 @@ class _ProfileScreenState extends State<ProfileScreen2>
         body: Stack(
           children: [
             BackgroundImage(),
-            TabBarView(controller: _tabController, children: [
-              SummaryTab(
-                stockProfile: widget.profile.stockProfile,
-                stockQuote: widget.profile.stockQuote,
-              ),
-              ChartTab(
-                color: widget.color,
-                stockProfile: null,
-                //stockChart: widget.profile.stockChart,
-                stockQuote: widget.profile.stockQuote,
-              ),
-              NewsListTab(widget.profile.stockQuote.symbol),
-              ForumTab(),
-            ])
+            TabBarView(
+                physics: NeverScrollableScrollPhysics(),
+                controller: _tabController,
+                children: [
+                  SummaryTab(
+                    stockProfile: widget.profile.stockProfile,
+                    stockQuote: widget.profile.stockQuote,
+                  ),
+                  ChartTab(
+                    color: widget.color,
+                    stockProfile: null,
+                    //stockChart: widget.profile.stockChart,
+                    stockQuote: widget.profile.stockQuote,
+                  ),
+                  NewsListTab(widget.profile.stockQuote.symbol),
+                  ForumTab(),
+                ])
           ],
         ));
   }
@@ -141,9 +174,7 @@ class WatchlistButtonWidget extends StatefulWidget {
   final StorageModel storageModel;
 
   WatchlistButtonWidget(
-      {required this.color,
-      required this.isSaved,
-      required this.storageModel});
+      {required this.color, required this.isSaved, required this.storageModel});
 
   @override
   _WatchlistButtonWidgetState createState() => _WatchlistButtonWidgetState();

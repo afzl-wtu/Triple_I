@@ -4,7 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:main/bloc/chart.dart';
 import 'package:main/bloc/news_bloc.dart';
 
 import 'package:main/bloc/sectorperformance.dart';
@@ -59,9 +58,6 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<HomeBloc>(
           create: (context) => HomeBloc(),
-        ),
-        BlocProvider<ChartBloc>(
-          create: (context) => ChartBloc(),
         ),
         BlocProvider<SectorPerformanceBloc>(
             create: (_) => SectorPerformanceBloc())
