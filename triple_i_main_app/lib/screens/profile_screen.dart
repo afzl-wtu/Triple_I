@@ -85,14 +85,13 @@ class _ProfileScreenState extends State<ProfileScreen2>
             DeviceOrientation.landscapeLeft,
             DeviceOrientation.landscapeRight
           ]);
-          print('PP: In Case 1');
           break;
         default:
           SystemChrome.setPreferredOrientations([
             DeviceOrientation.portraitUp,
             DeviceOrientation.portraitDown,
           ]);
-          print('PP: Case Default');
+
           break;
       }
     });
@@ -110,63 +109,79 @@ class _ProfileScreenState extends State<ProfileScreen2>
     super.dispose();
   }
 
+  void _settings(bool isLandscape) {
+    isLandscape
+        ? SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive)
+        : SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: widget.color,
-          centerTitle: true,
-          title: Text(this.widget.profile.stockQuote.symbol!),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          actions: <Widget>[
-            WatchlistButtonWidget(
-              storageModel: StorageModel(
-                  symbol: widget.profile.stockQuote.symbol,
-                  companyName: widget.profile.stockQuote.name),
-              isSaved: widget.isSaved,
-              color: Colors.white,
-            )
-          ],
-          bottom: TabBar(
-            indicatorColor: Theme.of(context).scaffoldBackgroundColor,
-            controller: _tabController,
-            tabs: [
-              Tab(text: 'Summary'.tr()),
-              Tab(text: 'Chart'.tr()),
-              Tab(
-                text: 'News'.tr(),
-              ),
-              Tab(
-                text: 'Forum'.tr(),
-              ),
+    final _isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+    _settings(_isLandscape);
+    return WillPopScope(
+      onWillPop: () async {
+        return _isLandscape ? false : true;
+      },
+      child: Scaffold(
+          appBar: _isLandscape
+              ? null
+              : AppBar(
+                  backgroundColor: widget.color,
+                  centerTitle: true,
+                  title: Text(this.widget.profile.stockQuote.symbol!),
+                  leading: IconButton(
+                    icon: Icon(Icons.arrow_back_ios),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  actions: <Widget>[
+                    WatchlistButtonWidget(
+                      storageModel: StorageModel(
+                          symbol: widget.profile.stockQuote.symbol,
+                          companyName: widget.profile.stockQuote.name),
+                      isSaved: widget.isSaved,
+                      color: Colors.white,
+                    )
+                  ],
+                  bottom: TabBar(
+                    indicatorColor: Theme.of(context).scaffoldBackgroundColor,
+                    controller: _tabController,
+                    tabs: [
+                      Tab(text: 'Summary'.tr()),
+                      Tab(text: 'Chart'.tr()),
+                      Tab(
+                        text: 'News'.tr(),
+                      ),
+                      Tab(
+                        text: 'Forum'.tr(),
+                      ),
+                    ],
+                  ),
+                ),
+          body: Stack(
+            children: [
+              BackgroundImage(),
+              TabBarView(
+                  physics: NeverScrollableScrollPhysics(),
+                  controller: _tabController,
+                  children: [
+                    SummaryTab(
+                      stockProfile: widget.profile.stockProfile,
+                      stockQuote: widget.profile.stockQuote,
+                    ),
+                    ChartTab(
+                      color: widget.color,
+                      stockProfile: null,
+                      //stockChart: widget.profile.stockChart,
+                      stockQuote: widget.profile.stockQuote,
+                    ),
+                    NewsListTab(widget.profile.stockQuote.symbol),
+                    ForumTab(),
+                  ])
             ],
-          ),
-        ),
-        body: Stack(
-          children: [
-            BackgroundImage(),
-            TabBarView(
-                physics: NeverScrollableScrollPhysics(),
-                controller: _tabController,
-                children: [
-                  SummaryTab(
-                    stockProfile: widget.profile.stockProfile,
-                    stockQuote: widget.profile.stockQuote,
-                  ),
-                  ChartTab(
-                    color: widget.color,
-                    stockProfile: null,
-                    //stockChart: widget.profile.stockChart,
-                    stockQuote: widget.profile.stockQuote,
-                  ),
-                  NewsListTab(widget.profile.stockQuote.symbol),
-                  ForumTab(),
-                ])
-          ],
-        ));
+          )),
+    );
   }
 }
 

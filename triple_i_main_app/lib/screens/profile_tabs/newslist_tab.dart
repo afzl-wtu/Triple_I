@@ -4,14 +4,22 @@ import 'package:main/repository/news/repository.dart';
 import 'package:main/screens/components/news_tile.dart';
 import 'package:main/widgets/loading_indicator.dart';
 
-class NewsListTab extends StatelessWidget {
-  final nc = NewsRepository();
+class NewsListTab extends StatefulWidget {
   final String? companySymbol;
   NewsListTab(this.companySymbol);
+
+  @override
+  State<NewsListTab> createState() => _NewsListTabState();
+}
+
+class _NewsListTabState extends State<NewsListTab>
+    with AutomaticKeepAliveClientMixin {
+  final nc = NewsRepository();
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: nc.fetchNews(specificSymbol: companySymbol),
+      future: nc.fetchNews(specificSymbol: widget.companySymbol),
       builder: (_, data) {
         if (!(data.connectionState == ConnectionState.waiting)) {
           final newsList = (data.data as NewsDataModel).news;
@@ -35,4 +43,8 @@ class NewsListTab extends StatelessWidget {
       },
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

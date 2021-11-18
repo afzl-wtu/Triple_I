@@ -8,6 +8,7 @@ import 'package:main/bloc/news_bloc.dart';
 
 import 'package:main/bloc/sectorperformance.dart';
 import 'package:main/codegen_loader.g.dart';
+import 'package:main/screens/auth_screen.dart';
 
 import './bloc/home.dart';
 import './bloc/profile.dart';
@@ -69,7 +70,7 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
-        home: MainScreen(),
+        home: AuthScreen(),
         debugShowCheckedModeBanner: false,
       ),
     );
