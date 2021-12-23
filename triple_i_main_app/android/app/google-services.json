@@ -43,6 +43,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "696592201747-iafua0micndpblhm6u5ahdrf8ah65m08.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tripleigroup.main",
+            "certificate_hash": "f68ea49b5638040296f4a3d97e922e3e2fa77d47"
+          }
+        },
+        {
           "client_id": "696592201747-ehgvrlp2dfnsssca8nb3tk38c30hl5j5.apps.googleusercontent.com",
           "client_type": 3
         }

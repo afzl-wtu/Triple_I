@@ -10,7 +10,6 @@ class ArticleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Article View: ${data.images!.length}');
     return Scaffold(
       appBar: AppBar(
         title: Text(data.title!),

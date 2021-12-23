@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -19,6 +20,7 @@ import 'screens/main_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     EasyLocalization(
       child: MyApp(),
@@ -31,9 +33,9 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  final _firebaseAuth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
-    Firebase.initializeApp();
     SystemChrome.setPreferredOrientations(
       [
         DeviceOrientation.portraitUp,
@@ -61,7 +63,8 @@ class MyApp extends StatelessWidget {
           create: (context) => HomeBloc(),
         ),
         BlocProvider<SectorPerformanceBloc>(
-            create: (_) => SectorPerformanceBloc())
+          create: (_) => SectorPerformanceBloc(),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -70,7 +73,7 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
-        home: AuthScreen(),
+        home: _firebaseAuth.currentUser != null ? MainScreen() : AuthScreen(),
         debugShowCheckedModeBanner: false,
       ),
     );
